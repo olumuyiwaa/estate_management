@@ -263,30 +263,10 @@ class _PaymentsTab extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('₦${fmt.format(p.amount)}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textDark)),
-                    const SizedBox(height: 4),
                     StatusBadge(label: paymentStatusLabel(p.status), color: color),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: 34,
-                      child: TextButton(
-                        onPressed: () {
-                          if (p.status == PaymentStatus.paid) {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentReceiptScreen(payment: p, method: 'Card Payment')));
-                          } else {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => DuePaymentScreen(initialPayment: p)));
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: p.status == PaymentStatus.paid ? AppTheme.primary : AppTheme.accent,
-                          backgroundColor: p.status == PaymentStatus.paid ? AppTheme.surface : AppTheme.accent.withOpacity(0.08),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                          padding: const EdgeInsets.symmetric(horizontal: 14),
-                        ),
-                        child: Text(p.status == PaymentStatus.paid ? 'View Receipt' : 'Pay Now', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-                      ),
-                    ),
                   ],
                 ),
               ),
