@@ -29,7 +29,7 @@ class EstateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Emerald Gardens Estate',
+      title: 'Citiview Estate',
       theme: AppTheme.theme,
       debugShowCheckedModeBanner: false,
       routes: {
@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Emerald Gardens',
+                    'Citiview Estate',
                     style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: -0.5),
                   ),
                   const SizedBox(height: 6),

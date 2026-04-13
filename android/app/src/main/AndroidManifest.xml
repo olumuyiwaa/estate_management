@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="estate_management"
+        android:label="Citiview Estate"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

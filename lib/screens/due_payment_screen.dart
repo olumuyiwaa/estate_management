@@ -84,17 +84,6 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
             if (_duePayments.isEmpty) ...[
               const EmptyState(icon: Icons.check_circle_outline_rounded, message: 'No outstanding dues at this time.'),
             ] else ..._duePayments.map((payment) => _buildPaymentRow(payment)).toList(),
-
-            const SizedBox(height: 18),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _focusedPayment != null ? _payCurrentSelection : null,
-                style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accent, padding: const EdgeInsets.symmetric(vertical: 14)),
-                child: const Text('Pay Outstanding Dues', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
-              ),
-            ),
-                        const SizedBox(height: 24),
           ],
         ),
       ),
@@ -233,6 +222,7 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
       _selectedCategory = payment.category;
       _amountController.text = _categoryAmounts[payment.category]?.toStringAsFixed(0) ?? payment.amount.toStringAsFixed(0);
     });
+    _payCurrentSelection();
   }
 
   void _payCurrentSelection() {
@@ -293,7 +283,7 @@ class PaymentReceiptScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Payment Receipt', showBack: true),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

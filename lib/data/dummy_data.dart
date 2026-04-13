@@ -241,6 +241,6 @@ class DummyData {
 
   // ── Current user ──────────────────────────────────────────────────────────
   static final EstateMember currentUser = members[0];
-  static const String estateName = 'Emerald Gardens Estate';
+  static const String estateName = 'Citiview Estate';
   static const String estateAddress = 'Plot 45, Lekki Phase 2, Lagos';
 }
