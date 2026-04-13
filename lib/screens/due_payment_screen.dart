@@ -65,16 +65,6 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const SectionHeader(title: 'Payment Gateway Options'),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: PaymentGatewayMethod.values.map((method) {
-                return _buildGatewayCard(method);
-              }).toList(),
-            ),
-            const SizedBox(height: 24),
             const SectionHeader(title: 'Recent Receipts'),
             const SizedBox(height: 12),
             ..._paidPayments.take(3).map((payment) => _buildReceiptRow(payment)).toList(),
@@ -91,41 +81,6 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
   }
 
 
-  Widget _buildGatewayCard(PaymentGatewayMethod method) {
-    final selected = method == _selectedMethod;
-    final label = _gatewayMethodLabel(method);
-    final icon = _gatewayMethodIcon(method);
-    return GestureDetector(
-      onTap: () => setState(() => _selectedMethod = method),
-      child: Container(
-        width: 150,
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: selected ? AppTheme.primary.withOpacity(0.12) : AppTheme.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: selected ? AppTheme.primary : AppTheme.divider),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: selected ? AppTheme.primary : AppTheme.secondary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: selected ? Colors.white : AppTheme.secondary, size: 24),
-            ),
-            const SizedBox(height: 12),
-            Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: selected ? AppTheme.primary : AppTheme.textDark)),
-            const SizedBox(height: 6),
-            Text('Secure, fast checkout', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildPaymentRow(PaymentRecord payment) {
     final color = paymentStatusColor(payment.status);
@@ -168,7 +123,7 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
                 StatusBadge(label: paymentStatusLabel(payment.status), color: color),
                 const SizedBox(height: 10),
                 OutlinedButton(
-                  onPressed: () => payment.status == PaymentStatus.paid ? _showReceipt(payment) : _selectPayment(payment),
+                  onPressed: () => payment.status == PaymentStatus.paid ? _showReceipt(payment) : _showPaymentGatewaySheet(payment),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: payment.status == PaymentStatus.paid ? AppTheme.primary : AppTheme.accent,
                     side: BorderSide(color: payment.status == PaymentStatus.paid ? AppTheme.primary : AppTheme.accent),
@@ -222,7 +177,103 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
       _selectedCategory = payment.category;
       _amountController.text = _categoryAmounts[payment.category]?.toStringAsFixed(0) ?? payment.amount.toStringAsFixed(0);
     });
-    _payCurrentSelection();
+  }
+
+  void _showPaymentGatewaySheet(PaymentRecord payment) {
+    _selectPayment(payment);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        var selectedMethod = _selectedMethod;
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            return Container(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 52),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(color: AppTheme.divider, borderRadius: BorderRadius.circular(2)),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  const Text('Choose payment method', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 6),
+                  const Text('Select how you want to pay for this invoice.', style: TextStyle(fontSize: 13, color: AppTheme.textMid)),
+                  const SizedBox(height: 18),
+                  ...PaymentGatewayMethod.values.map((method) {
+                    final selected = method == selectedMethod;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: GestureDetector(
+                        onTap: () => setSheetState(() => selectedMethod = method),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: selected ? AppTheme.primary.withOpacity(0.12) : AppTheme.surface,
+                            border: Border.all(color: selected ? AppTheme.primary : AppTheme.divider),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: selected ? AppTheme.primary : AppTheme.secondary.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Icon(_gatewayMethodIcon(method), color: selected ? Colors.white : AppTheme.secondary, size: 24),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(_gatewayMethodLabel(method), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: selected ? AppTheme.primary : AppTheme.textDark)),
+                                    const SizedBox(height: 4),
+                                    const Text('Secure and easy checkout', style: TextStyle(fontSize: 12, color: AppTheme.textMid)),
+                                  ],
+                                ),
+                              ),
+                              if (selected)
+                                const Icon(Icons.check_circle_rounded, color: AppTheme.accent, size: 20),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() => _selectedMethod = selectedMethod);
+                        Navigator.pop(sheetContext);
+                        _payCurrentSelection();
+                      },
+                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accent, padding: const EdgeInsets.symmetric(vertical: 14)),
+                      child: Text('Continue with ${_gatewayMethodLabel(selectedMethod)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void _payCurrentSelection() {
