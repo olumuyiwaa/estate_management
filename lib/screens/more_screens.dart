@@ -2,6 +2,10 @@
 // more_screens.dart  –  Marketplace, Facilities, Notices, Vendors, Profile
 // ═══════════════════════════════════════════════════════════════════════════
 
+import 'package:estate_app/screens/change_password_screen.dart';
+import 'package:estate_app/screens/help_feedback_screen.dart';
+import 'package:estate_app/screens/login_screen.dart';
+import 'package:estate_app/screens/notifications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../data/dummy_data.dart';
@@ -575,10 +579,10 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _settingsCard(BuildContext context) {
     final items = [
-      {'icon': Icons.notifications_outlined, 'label': 'Notifications', 'color': AppTheme.info},
-      {'icon': Icons.lock_outlined, 'label': 'Change Password', 'color': AppTheme.secondary},
-      {'icon': Icons.help_outline_rounded, 'label': 'Help & Support', 'color': AppTheme.success},
-      {'icon': Icons.logout_rounded, 'label': 'Sign Out', 'color': AppTheme.error},
+      {'icon': Icons.notifications_outlined, 'label': 'Notifications', 'color': AppTheme.info, 'page': const NotificationsScreen()},
+      {'icon': Icons.lock_outlined, 'label': 'Change Password', 'color': AppTheme.secondary, 'page': const ChangePasswordScreen()},
+      {'icon': Icons.help_outline_rounded, 'label': 'Help & Support', 'color': AppTheme.success, 'page': const HelpFeedbackScreen()},
+      {'icon': Icons.logout_rounded, 'label': 'Sign Out', 'color': AppTheme.error, 'page': const LoginScreen()},
     ];
 
     return Container(
@@ -586,6 +590,7 @@ class ProfileScreen extends StatelessWidget {
       child: Column(
         children: items.map((item) {
           final color = item['color'] as Color;
+          final page = item['page'] as Widget;
           return ListTile(
             leading: Container(
               width: 36, height: 36,
@@ -594,7 +599,19 @@ class ProfileScreen extends StatelessWidget {
             ),
             title: Text(item['label'] as String, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             trailing: const Icon(Icons.chevron_right_rounded, color: AppTheme.textLight),
-            onTap: () {},
+            onTap: () {
+              if (page is LoginScreen) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => page),
+                      (route) => false,
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => page),
+                );
+              }},
           );
         }).toList(),
       ),
