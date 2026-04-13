@@ -12,7 +12,7 @@ class GroupChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Group Chat'),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         itemCount: DummyData.groupChats.length,
         itemBuilder: (_, index) {
           final chat = DummyData.groupChats[index];
@@ -278,7 +278,7 @@ class _GroupChatRoomScreenState extends State<GroupChatRoomScreen> with SingleTi
                   ),
           ),
           Container(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 52),
             color: Colors.white,
             child: Row(
               children: [
@@ -286,7 +286,6 @@ class _GroupChatRoomScreenState extends State<GroupChatRoomScreen> with SingleTi
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Send a message to ${widget.chat.title}',
-                      suffixIcon: const Icon(Icons.send_rounded, color: AppTheme.accent),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: BorderSide(color: AppTheme.divider),

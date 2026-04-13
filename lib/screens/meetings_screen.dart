@@ -17,7 +17,7 @@ class MeetingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Meetings'),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         children: [
           const SectionHeader(title: 'Summary - Minutes'),
           const SizedBox(height: 12),

@@ -9,7 +9,7 @@ class ChangePasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Change Password'),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

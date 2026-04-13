@@ -74,6 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildActionTile(Icons.info_outline_rounded, 'About Estate App', 'View app version and terms.', const AboutAppScreen()),
             ],
           ),
+          const SizedBox(height: 42),
         ],
       ),
     );

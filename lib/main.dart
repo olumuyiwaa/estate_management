@@ -206,7 +206,7 @@ class _MainAppState extends State<MainApp> {
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               children: [
-                _moreItem(context, Icons.notifications_rounded, 'Notifications', AppTheme.secondary, const NotificationsScreen()),
+                _moreItem(context, Icons.campaign_rounded, 'Announcements', AppTheme.secondary, const NoticesScreen()),
                 _moreItem(context, Icons.book_online_rounded, 'Facilities', AppTheme.info, const FacilitiesScreen()),
                 _moreItem(context, Icons.store_rounded, 'Market', AppTheme.success, const MarketplaceScreen()),
                 _moreItem(context, Icons.business_center_rounded, 'Vendors', AppTheme.accent, const VendorsScreen()),

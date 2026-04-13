@@ -25,7 +25,7 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Notifications'),
       body: ListView.separated(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         itemCount: notices.length,
         separatorBuilder: (_, __) => const SizedBox(height: 10),
         itemBuilder: (_, index) {

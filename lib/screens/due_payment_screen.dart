@@ -60,7 +60,7 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Due Payments', showBack: true),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

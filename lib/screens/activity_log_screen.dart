@@ -17,7 +17,7 @@ class ActivityLogScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Activity Log'),
       body: ListView.separated(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(16,16,16,52),
         itemCount: items.length,
         separatorBuilder: (_, __) => const SizedBox(height: 10),
         itemBuilder: (_, index) {

@@ -28,7 +28,7 @@ class NoticesScreen extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         itemCount: DummyData.notices.length,
         itemBuilder: (_, i) => _NoticeCard(notice: DummyData.notices[i]),
       ),
@@ -121,7 +121,7 @@ class FacilitiesScreen extends StatelessWidget {
     return Scaffold(
       appBar: const EstateAppBar(title: 'Facility Booking'),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -137,7 +137,7 @@ class FacilitiesScreen extends StatelessWidget {
                 return GestureDetector(
                   onTap: () => _showBookingSheet(context, f),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(16,16,16,52),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
@@ -282,7 +282,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
         children: [
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16,16,16,52),
             child: Row(
               children: [
                 Expanded(
@@ -331,7 +331,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16,16,16,52),
               itemCount: items.length,
               itemBuilder: (_, i) => _ListingCard(listing: items[i]),
             ),
@@ -427,7 +427,7 @@ class VendorsScreen extends StatelessWidget {
         IconButton(icon: const Icon(Icons.add_rounded, color: Colors.white), onPressed: () {}),
       ]),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16,16,16,52),
         itemCount: DummyData.vendors.length,
         itemBuilder: (_, i) {
           final v = DummyData.vendors[i];
@@ -523,7 +523,7 @@ class ProfileScreen extends StatelessWidget {
             title: const Text('Profile'),
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16,16,16,52),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 // Wallet
