@@ -599,8 +599,10 @@ class ProfileScreen extends StatelessWidget {
             ),
             title: Text(item['label'] as String, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             trailing: const Icon(Icons.chevron_right_rounded, color: AppTheme.textLight),
-            onTap: () {
+            onTap: () async {
               if (page is LoginScreen) {
+                final shouldSignOut = await _confirmSignOut(context);
+                if (!shouldSignOut) return;
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => page),
@@ -616,5 +618,41 @@ class ProfileScreen extends StatelessWidget {
         }).toList(),
       ),
     );
+  }
+
+  Future<bool> _confirmSignOut(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              backgroundColor: AppTheme.surface,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              title: const Text('Confirm Sign Out', style: TextStyle(fontWeight: FontWeight.w700)),
+              content: const Text('Are you sure you want to sign out?', style: TextStyle(height: 1.5)),
+              actionsAlignment: MainAxisAlignment.spaceBetween,
+              actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              actions: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppTheme.textDark,
+                    side: const BorderSide(color: AppTheme.divider),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.error,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Sign Out'),
+                ),
+              ],
+            );
+          },
+        ) ?? false;
   }
 }

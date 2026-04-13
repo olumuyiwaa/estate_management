@@ -183,20 +183,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
-      title: const Text(DummyData.estateName, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-      actions: [
+      title: _showNotifications ? const Text(DummyData.estateName, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)) : null,
+      actions: _showNotifications ? [
         IconButton(icon: const Icon(Icons.notifications_outlined, color: Colors.white), onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen()));
         }),
         const SizedBox(width: 4),
-      ],
+      ] : null,
     );
   }
 
   Widget _buildQuickStats(NumberFormat fmt) {
     final paidCount = DummyData.payments.where((p) => p.status == PaymentStatus.paid).length;
     final openIncidents = DummyData.incidents.where((i) => i.status != IncidentStatus.resolved).length;
-    final todayVisitors = DummyData.visitors.where((v) => v.lastAction == AccessType.entry).length;
+    final todayVisitors = DummyData.visitors.where((v) => v.lastAction == AccessType.entry && v.hostName == DummyData.currentUser.name).length;
 
     return GridView.count(
       shrinkWrap: true,
@@ -209,7 +209,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         StatCard(label: 'Total Members', value: '${DummyData.members.length}', icon: Icons.people_rounded, color: AppTheme.secondary, subtitle: '+2 this month'),
         StatCard(label: 'Collected (₦)', value: '${fmt.format(DummyData.totalCollected / 1000)}K', icon: Icons.account_balance_wallet_rounded, color: AppTheme.accent),
         StatCard(label: 'Open Issues', value: '$openIncidents', icon: Icons.report_problem_rounded, color: AppTheme.error),
-        StatCard(label: 'Visitors Today', value: '$todayVisitors', icon: Icons.person_pin_rounded, color: AppTheme.info),
+        StatCard(label: 'Your Visitors Today', value: '$todayVisitors', icon: Icons.person_pin_rounded, color: AppTheme.info),
       ],
     );
   }

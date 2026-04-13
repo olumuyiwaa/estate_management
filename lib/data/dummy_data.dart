@@ -40,6 +40,8 @@ class DummyData {
   // ── Visitors ──────────────────────────────────────────────────────────────
   static final List<Visitor> visitors = [
     Visitor(id: 'v1', name: 'Mr. Olumide Benson', phone: '+234 810 111 2222', hostUnit: 'A-101', hostName: 'Adaeze Okonkwo', purpose: 'Personal Visit', lastAction: AccessType.entry, timestamp: DateTime.now().subtract(const Duration(hours: 2)), hasQrPass: true),
+    Visitor(id: 'v6', name: 'Mrs. Ifeoma Uzo', phone: '+234 814 555 6666', hostUnit: 'A-101', hostName: 'Adaeze Okonkwo', purpose: 'Family Visit', lastAction: AccessType.exit, timestamp: DateTime.now().subtract(const Duration(minutes: 50)), hasQrPass: true),
+    Visitor(id: 'v7', name: 'Laundry Delivery', phone: '+234 815 777 8888', hostUnit: 'A-101', hostName: 'Adaeze Okonkwo', purpose: 'Parcel Delivery', lastAction: AccessType.entry, timestamp: DateTime.now().subtract(const Duration(minutes: 35)), hasQrPass: false),
     Visitor(id: 'v2', name: 'Plumber - Jimoh Rasheed', phone: '+234 811 222 3333', hostUnit: 'B-201', hostName: 'Fatima Al-Hassan', purpose: 'Maintenance', lastAction: AccessType.entry, timestamp: DateTime.now().subtract(const Duration(hours: 1)), hasQrPass: false),
     Visitor(id: 'v3', name: 'Mrs. Grace Obi', phone: '+234 812 333 4444', hostUnit: 'C-301', hostName: 'Ngozi Dike', purpose: 'Family Visit', lastAction: AccessType.exit, timestamp: DateTime.now().subtract(const Duration(hours: 5)), hasQrPass: true),
     Visitor(id: 'v4', name: 'DHL Delivery', phone: '+234 700 345 7890', hostUnit: 'D-402', hostName: 'Taiwo Adeleke', purpose: 'Delivery', lastAction: AccessType.exit, timestamp: DateTime.now().subtract(const Duration(minutes: 45)), hasQrPass: false),

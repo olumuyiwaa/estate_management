@@ -32,12 +32,6 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
       appBar: AppBar(
         backgroundColor: AppTheme.primary,
         title: const Text('Security & Access'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.qr_code_scanner_rounded, color: Colors.white),
-            onPressed: () => _showQrScanner(context),
-          ),
-        ],
         bottom: TabBar(
           controller: _tabs,
           indicatorColor: AppTheme.accent,
@@ -62,38 +56,6 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
     );
   }
 
-  void _showQrScanner(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('QR Scanner'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 200, height: 200,
-              decoration: BoxDecoration(
-                color: AppTheme.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.divider, width: 2),
-              ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.qr_code_scanner_rounded, size: 80, color: AppTheme.textLight),
-                  SizedBox(height: 12),
-                  Text('Point camera at QR code', style: TextStyle(color: AppTheme.textMid, fontSize: 12), textAlign: TextAlign.center),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close'))],
-      ),
-    );
-  }
-
   void _showRegisterVisitor(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -111,7 +73,7 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
             const SizedBox(height: 12),
             const TextField(decoration: InputDecoration(labelText: 'Phone Number')),
             const SizedBox(height: 12),
-            const TextField(decoration: InputDecoration(labelText: 'Host Unit (e.g. A-101)')),
+            TextField(decoration: const InputDecoration(labelText: 'Host Unit (e.g. Z-991)'),controller: TextEditingController(text: DummyData.currentUser.unitNumber),),
             const SizedBox(height: 12),
             const TextField(decoration: InputDecoration(labelText: 'Purpose of Visit')),
             const SizedBox(height: 12),
@@ -149,10 +111,19 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
 class _VisitorsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = DummyData.currentUser;
+    final userVisitors = DummyData.visitors.where((visitor) {
+      return visitor.hostUnit == user.unitNumber || visitor.hostName == user.name;
+    }).toList();
+
+    if (userVisitors.isEmpty) {
+      return const EmptyState(icon: Icons.person_search_outlined, message: 'No visitors found for your unit');
+    }
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: DummyData.visitors.length,
-      itemBuilder: (_, i) => _VisitorCard(visitor: DummyData.visitors[i]),
+      itemCount: userVisitors.length,
+      itemBuilder: (_, i) => _VisitorCard(visitor: userVisitors[i]),
     );
   }
 }
@@ -219,7 +190,9 @@ class _AccessLogTab extends StatelessWidget {
   static final List<Map<String, dynamic>> _log = [
     {'time': '10:32 AM', 'name': 'Chidi Anyanwu', 'unit': 'A-102', 'action': 'Entry', 'method': 'QR Code'},
     {'time': '10:15 AM', 'name': 'DHL Delivery', 'unit': 'D-402', 'action': 'Exit', 'method': 'Gate Pass'},
-    {'time': '09:48 AM', 'name': 'Plumber – Jimoh', 'unit': 'B-201', 'action': 'Entry', 'method': 'Manual'},
+    {'time': '10:05 AM', 'name': 'Laundry Delivery', 'unit': 'A-101', 'action': 'Entry', 'method': 'Manual'},
+    {'time': '09:55 AM', 'name': 'Mrs. Ifeoma Uzo', 'unit': 'A-101', 'action': 'Exit', 'method': 'QR Code'},
+    {'time': '09:20 AM', 'name': 'Plumber – Jimoh', 'unit': 'B-201', 'action': 'Entry', 'method': 'Manual'},
     {'time': '09:12 AM', 'name': 'Mrs. Grace Obi', 'unit': 'C-301', 'action': 'Exit', 'method': 'QR Code'},
     {'time': '08:55 AM', 'name': 'Mr. Olumide Benson', 'unit': 'A-101', 'action': 'Entry', 'method': 'QR Code'},
     {'time': '08:30 AM', 'name': 'Adanna Cleaning Staff', 'unit': 'Estate', 'action': 'Entry', 'method': 'Staff Badge'},
@@ -229,11 +202,18 @@ class _AccessLogTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = DummyData.currentUser;
+    final userLog = _log.where((entry) => entry['unit'] == user.unitNumber).toList();
+
+    if (userLog.isEmpty) {
+      return const EmptyState(icon: Icons.lock_outline, message: 'No access log entries found for your unit');
+    }
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: _log.length,
+      itemCount: userLog.length,
       itemBuilder: (_, i) {
-        final e = _log[i];
+        final e = userLog[i];
         final isIn = e['action'] == 'Entry';
         final color = isIn ? AppTheme.success : AppTheme.error;
         return Container(

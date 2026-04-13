@@ -26,6 +26,7 @@ class _MembersScreenState extends State<MembersScreen> {
       appBar: EstateAppBar(
         title: 'Members',
         actions: [
+          if (DummyData.currentUser.role == MemberRole.exco)
           IconButton(icon: const Icon(Icons.person_add_alt_rounded, color: Colors.white), onPressed: () => _showAddMemberSheet(context)),
         ],
       ),
