@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
 import '../models/models.dart';
+import '../screens/member_profile_screen.dart';
 import '../theme/app_theme.dart';
 import '../widgets/widgets.dart';
 
@@ -132,11 +133,16 @@ class _MemberCard extends StatelessWidget {
 
   Color _roleColor() {
     switch (member.role) {
-      case MemberRole.exco: return AppTheme.accent;
-      case MemberRole.owner: return AppTheme.secondary;
-      case MemberRole.tenant: return AppTheme.info;
-      case MemberRole.facilityManager: return AppTheme.success;
-      case MemberRole.securityPersonnel: return AppTheme.error;
+      case MemberRole.exco:
+        return AppTheme.accent;
+      case MemberRole.owner:
+        return AppTheme.secondary;
+      case MemberRole.tenant:
+        return AppTheme.info;
+      case MemberRole.facilityManager:
+        return AppTheme.success;
+      case MemberRole.securityPersonnel:
+        return AppTheme.error;
     }
   }
 
@@ -156,9 +162,11 @@ class _MemberCard extends StatelessWidget {
             MemberAvatar(initials: member.avatarInitials, color: _roleColor()),
             if (member.isVerified)
               Positioned(
-                right: 0, bottom: 0,
+                right: 0,
+                bottom: 0,
                 child: Container(
-                  width: 14, height: 14,
+                  width: 14,
+                  height: 14,
                   decoration: const BoxDecoration(color: AppTheme.success, shape: BoxShape.circle),
                   child: const Icon(Icons.check, color: Colors.white, size: 9),
                 ),
@@ -178,19 +186,19 @@ class _MemberCard extends StatelessWidget {
             StatusBadge(label: member.roleLabel, color: _roleColor()),
           ],
         ),
-        trailing: IconButton(
+        trailing: (member.id != DummyData.currentUser.id) ? IconButton(
           icon: const Icon(Icons.more_vert_rounded, color: AppTheme.textMid),
           onPressed: () => _showMemberOptions(context),
-        ),
+        ):null,
       ),
     );
   }
 
-  void _showMemberOptions(BuildContext context) {
+  void _showMemberOptions(BuildContext parentContext) {
     showModalBottomSheet(
-      context: context,
+      context: parentContext,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (_) => Padding(
+      builder: (sheetContext) => Padding(
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 36),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -200,24 +208,46 @@ class _MemberCard extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8, bottom: 16),
               child: Text(member.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
             ),
-            _option(context, Icons.visibility_outlined, 'View Profile', AppTheme.secondary),
-            _option(context, Icons.chat_outlined, 'Send Message', AppTheme.info),
-            _option(context, Icons.block_outlined, 'Report Account', AppTheme.error),
+            _option(
+              sheetContext,
+              Icons.visibility_outlined,
+              'View Profile',
+              AppTheme.secondary,
+              () {
+                Navigator.pop(sheetContext);
+                Navigator.push(parentContext, MaterialPageRoute(builder: (_) => MemberProfileScreen(member: member)));
+              },
+            ),
+            _option(
+              sheetContext,
+              Icons.chat_outlined,
+              'Send Message (WhatsApp)',
+              AppTheme.info,
+              () => Navigator.pop(sheetContext),
+            ),
+            _option(
+              sheetContext,
+              Icons.block_outlined,
+              'Report Account',
+              AppTheme.error,
+              () => Navigator.pop(sheetContext),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _option(BuildContext ctx, IconData icon, String label, Color color) {
+  Widget _option(BuildContext ctx, IconData icon, String label, Color color, VoidCallback onTap) {
     return ListTile(
       leading: Container(
-        width: 36, height: 36,
+        width: 36,
+        height: 36,
         decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(9)),
         child: Icon(icon, color: color, size: 18),
       ),
       title: Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-      onTap: () => Navigator.pop(ctx),
+      onTap: onTap,
     );
   }
 }

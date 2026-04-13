@@ -58,6 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
+                const SizedBox(height: 24),
                 _buildQuickStats(fmt),
                 const SizedBox(height: 24),
                 _buildNoticesBanner(context),
@@ -200,6 +201,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return GridView.count(
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       mainAxisSpacing: 12,

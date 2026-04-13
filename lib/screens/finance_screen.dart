@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +7,7 @@ import '../data/dummy_data.dart';
 import '../models/models.dart';
 import '../theme/app_theme.dart';
 import '../widgets/widgets.dart';
+import 'due_payment_screen.dart';
 
 class FinanceScreen extends StatefulWidget {
   const FinanceScreen({super.key});
@@ -14,11 +17,15 @@ class FinanceScreen extends StatefulWidget {
 
 class _FinanceScreenState extends State<FinanceScreen> with SingleTickerProviderStateMixin {
   late TabController _tabs;
+  late final List<int> _availableYears;
+  late int _selectedYear;
   final fmt = NumberFormat('#,###', 'en_US');
 
   @override
   void initState() {
     super.initState();
+    _availableYears = DummyData.yearlyIncome.keys.toList()..sort((a, b) => b.compareTo(a));
+    _selectedYear = _availableYears.first;
     _tabs = TabController(length: 3, vsync: this);
   }
 
@@ -42,10 +49,21 @@ class _FinanceScreenState extends State<FinanceScreen> with SingleTickerProvider
           tabs: const [Tab(text: 'Overview'), Tab(text: 'Payments'), Tab(text: 'Expenses')],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const DuePaymentScreen()));},
+        backgroundColor: AppTheme.accent,
+        icon: const Icon(Icons.payments, color: Colors.white),
+        label: const Text('Pay Dues', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+      ),
       body: TabBarView(
         controller: _tabs,
         children: [
-          _OverviewTab(fmt: fmt),
+          _OverviewTab(
+            fmt: fmt,
+            selectedYear: _selectedYear,
+            availableYears: _availableYears,
+            onYearChanged: (year) => setState(() => _selectedYear = year),
+          ),
           _PaymentsTab(fmt: fmt),
           _ExpensesTab(fmt: fmt),
         ],
@@ -57,7 +75,16 @@ class _FinanceScreenState extends State<FinanceScreen> with SingleTickerProvider
 // ── Overview Tab ──────────────────────────────────────────────────────────
 class _OverviewTab extends StatelessWidget {
   final NumberFormat fmt;
-  const _OverviewTab({required this.fmt});
+  final int selectedYear;
+  final List<int> availableYears;
+  final ValueChanged<int> onYearChanged;
+
+  const _OverviewTab({
+    required this.fmt,
+    required this.selectedYear,
+    required this.availableYears,
+    required this.onYearChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +94,33 @@ class _OverviewTab extends StatelessWidget {
         children: [
           _buildBalanceCard(),
           const SizedBox(height: 20),
-          const SectionHeader(title: 'Monthly Income (Last 6 Months)'),
+          Row(
+            children: [
+              const Expanded(child: SectionHeader(title: 'Yearly Income')),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppTheme.divider),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<int>(
+                    value: selectedYear,
+                    items: availableYears
+                        .map((year) => DropdownMenuItem(value: year, child: Text(year.toString(), style: const TextStyle(fontSize: 13))))
+                        .toList(),
+                    onChanged: (value) {
+                      if (value != null) onYearChanged(value);
+                    },
+                    icon: const Icon(Icons.calendar_today_rounded, size: 18, color: AppTheme.textMid),
+                    style: const TextStyle(color: AppTheme.textDark),
+                  ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 12),
           _buildBarChart(),
           const SizedBox(height: 20),
@@ -125,27 +178,29 @@ class _OverviewTab extends StatelessWidget {
   }
 
   Widget _buildBarChart() {
-    final data = DummyData.monthlyIncome;
+    final data = DummyData.yearlyIncome[selectedYear] ?? DummyData.monthlyIncome;
+    final maxAmount = data.fold<double>(0, (prev, element) => math.max(prev, element['amount'] as double));
+
     return Container(
-      height: 200,
-      padding: const EdgeInsets.all(16),
+      height: 220,
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppTheme.divider),
       ),
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          maxY: 700000,
+          maxY: (maxAmount * 1.15).ceilToDouble(),
           barGroups: data.asMap().entries.map((e) => BarChartGroupData(
             x: e.key,
             barRods: [
               BarChartRodData(
                 toY: e.value['amount'] as double,
-                color: AppTheme.accent,
-                width: 22,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                color: AppTheme.secondary,
+                width: 16,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(2)),
               ),
             ],
           )).toList(),
@@ -162,7 +217,11 @@ class _OverviewTab extends StatelessWidget {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                getTitlesWidget: (v, _) => Text(data[v.toInt()]['month'] as String, style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                getTitlesWidget: (v, _) {
+                  final index = v.toInt();
+                  if (index < 0 || index >= data.length) return const SizedBox();
+                  return Text(data[index]['month'] as String, style: const TextStyle(fontSize: 11, color: AppTheme.textMid));
+                },
               ),
             ),
           ),

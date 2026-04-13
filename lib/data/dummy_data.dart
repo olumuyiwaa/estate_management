@@ -3,14 +3,14 @@ import '../models/models.dart';
 class DummyData {
   // ── Members ───────────────────────────────────────────────────────────────
   static final List<EstateMember> members = [
-    EstateMember(id: 'm1', name: 'Adaeze Okonkwo', email: 'adaeze@email.com', phone: '+234 801 234 5678', unitNumber: 'A-101', avatarInitials: 'AO', role: MemberRole.exco, isVerified: true, joinDate: DateTime(2021, 3, 12), walletBalance: 45000),
-    EstateMember(id: 'm2', name: 'Chukwuemeka Eze', email: 'emeka@email.com', phone: '+234 802 345 6789', unitNumber: 'A-102', avatarInitials: 'CE', role: MemberRole.owner, isVerified: true, joinDate: DateTime(2020, 7, 5), walletBalance: 120000),
-    EstateMember(id: 'm3', name: 'Fatima Al-Hassan', email: 'fatima@email.com', phone: '+234 803 456 7890', unitNumber: 'B-201', avatarInitials: 'FA', role: MemberRole.tenant, isVerified: true, joinDate: DateTime(2022, 1, 20), walletBalance: 18500),
-    EstateMember(id: 'm4', name: 'Babatunde Lawal', email: 'babs@email.com', phone: '+234 804 567 8901', unitNumber: 'B-202', avatarInitials: 'BL', role: MemberRole.owner, isVerified: false, joinDate: DateTime(2023, 5, 10), walletBalance: 75000),
-    EstateMember(id: 'm5', name: 'Ngozi Dike', email: 'ngozi@email.com', phone: '+234 805 678 9012', unitNumber: 'C-301', avatarInitials: 'ND', role: MemberRole.tenant, isVerified: true, joinDate: DateTime(2022, 9, 15), walletBalance: 32000),
-    EstateMember(id: 'm6', name: 'Kayode Afolabi', email: 'kayode@email.com', phone: '+234 806 789 0123', unitNumber: 'C-302', avatarInitials: 'KA', role: MemberRole.exco, isVerified: true, joinDate: DateTime(2019, 11, 30), walletBalance: 89000),
-    EstateMember(id: 'm7', name: 'Amaka Nwosu', email: 'amaka@email.com', phone: '+234 807 890 1234', unitNumber: 'D-401', avatarInitials: 'AN', role: MemberRole.facilityManager, isVerified: true, joinDate: DateTime(2021, 6, 8), walletBalance: 55000),
-    EstateMember(id: 'm8', name: 'Taiwo Adeleke', email: 'taiwo@email.com', phone: '+234 808 901 2345', unitNumber: 'D-402', avatarInitials: 'TA', role: MemberRole.owner, isVerified: true, joinDate: DateTime(2020, 2, 14), walletBalance: 210000),
+    EstateMember(id: 'm1', name: 'Adaeze Okonkwo', email: 'adaeze@email.com', phone: '+234 801 234 5678', unitNumber: 'A-101', avatarInitials: 'AO', role: MemberRole.exco, isVerified: true, joinDate: DateTime(2021, 3, 12)),
+    EstateMember(id: 'm2', name: 'Chukwuemeka Eze', email: 'emeka@email.com', phone: '+234 802 345 6789', unitNumber: 'A-102', avatarInitials: 'CE', role: MemberRole.owner, isVerified: true, joinDate: DateTime(2020, 7, 5)),
+    EstateMember(id: 'm3', name: 'Fatima Al-Hassan', email: 'fatima@email.com', phone: '+234 803 456 7890', unitNumber: 'B-201', avatarInitials: 'FA', role: MemberRole.tenant, isVerified: true, joinDate: DateTime(2022, 1, 20)),
+    EstateMember(id: 'm4', name: 'Babatunde Lawal', email: 'babs@email.com', phone: '+234 804 567 8901', unitNumber: 'B-202', avatarInitials: 'BL', role: MemberRole.owner, isVerified: false, joinDate: DateTime(2023, 5, 10)),
+    EstateMember(id: 'm5', name: 'Ngozi Dike', email: 'ngozi@email.com', phone: '+234 805 678 9012', unitNumber: 'C-301', avatarInitials: 'ND', role: MemberRole.tenant, isVerified: true, joinDate: DateTime(2022, 9, 15)),
+    EstateMember(id: 'm6', name: 'Kayode Afolabi', email: 'kayode@email.com', phone: '+234 806 789 0123', unitNumber: 'C-302', avatarInitials: 'KA', role: MemberRole.exco, isVerified: true, joinDate: DateTime(2019, 11, 30)),
+    EstateMember(id: 'm7', name: 'Amaka Nwosu', email: 'amaka@email.com', phone: '+234 807 890 1234', unitNumber: 'D-401', avatarInitials: 'AN', role: MemberRole.facilityManager, isVerified: true, joinDate: DateTime(2021, 6, 8)),
+    EstateMember(id: 'm8', name: 'Taiwo Adeleke', email: 'taiwo@email.com', phone: '+234 808 901 2345', unitNumber: 'D-402', avatarInitials: 'TA', role: MemberRole.owner, isVerified: true, joinDate: DateTime(2020, 2, 14)),
   ];
 
   // ── Payments ──────────────────────────────────────────────────────────────
@@ -98,6 +98,51 @@ class DummyData {
     {'month': 'Feb', 'amount': 480000.0},
     {'month': 'Mar', 'amount': 605000.0},
   ];
+
+  static final Map<int, List<Map<String, dynamic>>> yearlyIncome = {
+    2025: [
+      {'month': 'Jan', 'amount': 420000.0},
+      {'month': 'Feb', 'amount': 395000.0},
+      {'month': 'Mar', 'amount': 510000.0},
+      {'month': 'Apr', 'amount': 470000.0},
+      {'month': 'May', 'amount': 445000.0},
+      {'month': 'Jun', 'amount': 500000.0},
+      {'month': 'Jul', 'amount': 525000.0},
+      {'month': 'Aug', 'amount': 515000.0},
+      {'month': 'Sep', 'amount': 485000.0},
+      {'month': 'Oct', 'amount': 450000.0},
+      {'month': 'Nov', 'amount': 395000.0},
+      {'month': 'Dec', 'amount': 530000.0},
+    ],
+    2024: [
+      {'month': 'Jan', 'amount': 385000.0},
+      {'month': 'Feb', 'amount': 410000.0},
+      {'month': 'Mar', 'amount': 460000.0},
+      {'month': 'Apr', 'amount': 430000.0},
+      {'month': 'May', 'amount': 415000.0},
+      {'month': 'Jun', 'amount': 470000.0},
+      {'month': 'Jul', 'amount': 490000.0},
+      {'month': 'Aug', 'amount': 505000.0},
+      {'month': 'Sep', 'amount': 465000.0},
+      {'month': 'Oct', 'amount': 440000.0},
+      {'month': 'Nov', 'amount': 405000.0},
+      {'month': 'Dec', 'amount': 520000.0},
+    ],
+    2023: [
+      {'month': 'Jan', 'amount': 360000.0},
+      {'month': 'Feb', 'amount': 375000.0},
+      {'month': 'Mar', 'amount': 420000.0},
+      {'month': 'Apr', 'amount': 400000.0},
+      {'month': 'May', 'amount': 390000.0},
+      {'month': 'Jun', 'amount': 450000.0},
+      {'month': 'Jul', 'amount': 470000.0},
+      {'month': 'Aug', 'amount': 480000.0},
+      {'month': 'Sep', 'amount': 455000.0},
+      {'month': 'Oct', 'amount': 430000.0},
+      {'month': 'Nov', 'amount': 395000.0},
+      {'month': 'Dec', 'amount': 500000.0},
+    ],
+  };
 
   static final List<Map<String, dynamic>> expenseCategories = [
     {'name': 'Security', 'amount': 250000.0, 'color': 0xFF0D1B2A},

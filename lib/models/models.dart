@@ -12,13 +12,11 @@ class EstateMember {
   final MemberRole role;
   final bool isVerified;
   final DateTime joinDate;
-  final double walletBalance;
 
   const EstateMember({
     required this.id, required this.name, required this.email,
     required this.phone, required this.unitNumber, required this.avatarInitials,
     required this.role, required this.isVerified, required this.joinDate,
-    required this.walletBalance,
   });
 
   String get roleLabel {

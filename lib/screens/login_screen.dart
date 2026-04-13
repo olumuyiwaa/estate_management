@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text('Welcome back', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppTheme.textDark)),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to manage your estate and review your dashboard.',
+                    'Sign in to view your estate dashboard and activities.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textMid),
                   ),
                   const SizedBox(height: 32),
