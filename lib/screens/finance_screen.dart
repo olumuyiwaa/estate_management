@@ -46,7 +46,7 @@ class _FinanceScreenState extends State<FinanceScreen> with SingleTickerProvider
           indicatorColor: AppTheme.accent,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white60,
-          tabs: const [Tab(text: 'Overview'), Tab(text: 'Payments'), Tab(text: 'Expenses')],
+          tabs: const [Tab(text: 'Overview'), Tab(text: 'Income'), Tab(text: 'Expenses')],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(

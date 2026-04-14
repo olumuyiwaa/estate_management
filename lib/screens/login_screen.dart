@@ -13,6 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _loading = false;
+  bool _showPassword = false;
   String? _errorMessage;
 
   static const _demoCredentials = {
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: AppTheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -103,8 +104,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 16),
                         TextFormField(
                           controller: _passwordController,
-                          obscureText: true,
-                          decoration: _inputDecoration(icon: Icons.lock_outline, label: 'Password'),
+                          obscureText: !_showPassword,
+                          decoration: _inputDecoration(icon: Icons.lock_outline, label: 'Password').copyWith(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _showPassword ? Icons.visibility : Icons.visibility_off,
+                                color: AppTheme.textMid,
+                              ),
+                              onPressed: () => setState(() => _showPassword = !_showPassword),
+                            ),
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) return 'Enter your password';
                             if (value.length < 6) return 'Password must be at least 6 characters';

@@ -137,7 +137,7 @@ class FacilitiesScreen extends StatelessWidget {
                 return GestureDetector(
                   onTap: () => _showBookingSheet(context, f),
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(16,16,16,52),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
@@ -155,6 +155,8 @@ class FacilitiesScreen extends StatelessWidget {
                         Text(f['name'] as String, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 4),
                         Text(f['fee'] as String, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 4),
+                        const Text("Book Now", style: TextStyle(fontSize: 11,color: AppTheme.textLight,decoration: TextDecoration.underline, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
