@@ -75,10 +75,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppTheme.primary, AppTheme.secondary],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          image: DecorationImage(
+            image: AssetImage('assets/img1.jpeg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Center(
@@ -90,13 +89,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 90, height: 90,
+                    width: 120, height: 120,
                     decoration: BoxDecoration(
-                      color: AppTheme.accent,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
-                      boxShadow: [BoxShadow(color: AppTheme.accent.withOpacity(0.4), blurRadius: 24, offset: const Offset(0, 8))],
+                      boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.4), blurRadius: 24, offset: const Offset(0, 8))],
                     ),
-                    child: const Icon(Icons.domain_rounded, size: 48, color: Colors.white),
+                    child: Image.asset('assets/logo.png'),
                   ),
                   const SizedBox(height: 24),
                   const Text(
@@ -106,7 +105,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   const SizedBox(height: 6),
                   Text(
                     'Estate Management',
-                    style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 15),
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    '...powered by Corvanta',
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 48),
                   SizedBox(

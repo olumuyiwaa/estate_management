@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Color Palette inspired by Corvanta.ng
-  static const Color primary = Color(0xFF0D6EFD);      // Bright Blue
+  static const Color primary = Color(0xFF7A1AC4);
+  static const Color accent = Color(0xFFEA2553);
+  // other colors
   static const Color secondary = Color(0xFF6610F2);    // Deep Purple
-  static const Color accent = Color(0xFF0DCAF0);       // Cyan
   static const Color accentLight = Color(0xFFE3F8FF);  // Light Cyan
   static const Color surface = Color(0xFFFFFFFF);      // White
   static const Color cardBg = Color(0xFFF8FAFB);

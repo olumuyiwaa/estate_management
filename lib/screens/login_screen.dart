@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
@@ -16,14 +18,39 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
   String? _errorMessage;
 
+  final PageController _sliderController = PageController();
+  Timer? _sliderTimer;
+  int _slideIndex = 0;
+  static const _sliderImages = [
+    'assets/img2.jpeg',
+    'assets/img1.jpeg',
+    'assets/img3.jpeg',
+  ];
+
   static const _demoCredentials = {
     'adaeze@email.com': 'password123',
   };
 
   @override
+  void initState() {
+    super.initState();
+    _sliderTimer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!mounted) return;
+      final nextPage = (_slideIndex + 1) % _sliderImages.length;
+      _sliderController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
   void dispose() {
+    _sliderTimer?.cancel();
     _emailController.dispose();
     _passwordController.dispose();
+    _sliderController.dispose();
     super.dispose();
   }
 
@@ -66,18 +93,51 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(
-                    child: Container(
-                    width: 380,
-                    height: 380,
-                    decoration: BoxDecoration(
-                      color: AppTheme.accent,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(color: AppTheme.accent.withOpacity(0.25), blurRadius: 16, offset: const Offset(0, 8)),
-                      ],
+                    child: SizedBox(
+                      width: 380,
+                      height: 380,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Stack(
+                          children: [
+                            PageView.builder(
+                              controller: _sliderController,
+                              itemCount: _sliderImages.length,
+                              onPageChanged: (index) => setState(() => _slideIndex = index),
+                              itemBuilder: (context, index) => Image.asset(
+                                _sliderImages[index],
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.black.withOpacity(0.25),
+                                    Colors.transparent,
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child:  Container(
+                                width: 72, height: 72,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(24),
+                                  boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.4), blurRadius: 24, offset: const Offset(0, 8))],
+                                ),
+                                child: Image.asset('assets/logo.png'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    child: const Icon(Icons.domain_rounded, size: 40, color: Colors.white),
-                  ),
                   ),
                   const SizedBox(height: 28),
                   Text('Welcome back', style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: AppTheme.textDark)),
@@ -133,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                       onPressed: _loading ? null : _submit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primary,
+                        backgroundColor: AppTheme.accent,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
                       child: _loading
@@ -145,6 +205,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     'Need help? Contact estate admin to set up your account.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textMid),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    '...powered by Corvanta',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppTheme.textMid),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
