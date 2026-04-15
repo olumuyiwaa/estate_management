@@ -124,8 +124,8 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(title, style: Theme.of(context).textTheme.titleLarge),
         if (actionLabel != null)
-          GestureDetector(
-            onTap: onAction,
+          TextButton(
+            onPressed: onAction,
             child: Text(actionLabel!, style: const TextStyle(fontSize: 13, color: AppTheme.accent, fontWeight: FontWeight.w600)),
           ),
       ],

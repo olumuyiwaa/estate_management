@@ -179,7 +179,7 @@ class FacilitiesScreen extends StatelessWidget {
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (_) => Padding(
-        padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 24),
+        padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 52),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,6 +269,174 @@ class MarketplaceScreen extends StatefulWidget {
 class _MarketplaceScreenState extends State<MarketplaceScreen> {
   bool _showServices = false;
 
+  void _showCreateListingSheet() {
+    final titleController = TextEditingController();
+    final categoryController = TextEditingController();
+    final priceController = TextEditingController();
+    final descriptionController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    bool isService = _showServices;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (_) => Padding(
+        padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 52),
+        child: StatefulBuilder(
+          builder: (context, setModalState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Create a new listing', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => setModalState(() => isService = false),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            color: !isService ? AppTheme.primary : AppTheme.surface,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppTheme.divider),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.shopping_bag_outlined,
+                                  size: 20,
+                                  color: isService ? AppTheme.textDark : Colors.white,
+                                ),
+                                const SizedBox(width: 8),
+                                Text('Item', style: TextStyle(color: isService ? AppTheme.textDark : Colors.white, fontWeight: FontWeight.w600)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => setModalState(() => isService = true),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            color: isService ? AppTheme.primary : AppTheme.surface,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppTheme.divider),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.build_circle_outlined,
+                                  size: 20,
+                                  color: isService ? Colors.white : AppTheme.textDark,
+                                ),
+                                const SizedBox(width: 8),
+                                Text('Service', style: TextStyle(color: isService ? Colors.white : AppTheme.textDark, fontWeight: FontWeight.w600)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: titleController,
+                        decoration: const InputDecoration(labelText: 'Listing title'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return 'Enter a title';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: categoryController,
+                        decoration: const InputDecoration(labelText: 'Category'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return 'Enter a category';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: priceController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: 'Price (₦)'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return 'Enter a price';
+                          if (double.tryParse(value.replaceAll(',', '')) == null) return 'Enter a valid number';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: descriptionController,
+                        maxLines: 4,
+                        decoration: const InputDecoration(labelText: 'Description'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) return 'Enter a description';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (!formKey.currentState!.validate()) return;
+                            final user = DummyData.currentUser;
+                            final listing = MarketListing(
+                              id: 'ml${DummyData.listings.length + 1}',
+                              title: titleController.text.trim(),
+                              description: descriptionController.text.trim(),
+                              sellerName: user.name,
+                              sellerUnit: user.unitNumber,
+                              category: categoryController.text.trim(),
+                              price: double.parse(priceController.text.trim().replaceAll(',', '')),
+                              isService: isService,
+                              listedAt: DateTime.now(),
+                            );
+
+                            setState(() {
+                              DummyData.listings.insert(0, listing);
+                              _showServices = isService;
+                            });
+
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Your ${isService ? 'service' : 'item'} has been listed.')),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
+                          child: const Text('Create Listing'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = DummyData.listings.where((l) => _showServices ? l.isService : !l.isService).toList();
@@ -277,7 +445,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       appBar: EstateAppBar(
         title: 'Estate Marketplace',
         actions: [
-          IconButton(icon: const Icon(Icons.add_rounded, color: Colors.white), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.add_rounded, color: Colors.white), onPressed: _showCreateListingSheet),
         ],
       ),
       body: Column(
@@ -418,7 +586,242 @@ class _ListingCard extends StatelessWidget {
   }
 }
 
-// ── Vendors ────────────────────────────────────────────────────────────────
+// ── Vendor Profile ───────────────────────────────────────────────────────
+class VendorProfileScreen extends StatefulWidget {
+  const VendorProfileScreen({super.key});
+
+  @override
+  State<VendorProfileScreen> createState() => _VendorProfileScreenState();
+}
+
+class _VendorProfileScreenState extends State<VendorProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
+  late final EstateMember _user;
+  Vendor? _vendor;
+  late final TextEditingController _nameController;
+  late final TextEditingController _categoryController;
+  late final TextEditingController _contactController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _emailController;
+  bool _isApproved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = DummyData.currentUser;
+    Vendor? existing;
+    for (final vendor in DummyData.vendors) {
+      if (vendor.email == _user.email || vendor.contactPerson == _user.name) {
+        existing = vendor;
+        break;
+      }
+    }
+    _vendor = existing;
+
+    _nameController = TextEditingController(text: _vendor?.name ?? '${_user.name} Services');
+    _categoryController = TextEditingController(text: _vendor?.category ?? 'General');
+    _contactController = TextEditingController(text: _vendor?.contactPerson ?? _user.name);
+    _phoneController = TextEditingController(text: _vendor?.phone ?? _user.phone);
+    _emailController = TextEditingController(text: _vendor?.email ?? _user.email);
+    _isApproved = _vendor?.isApproved ?? false;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _categoryController.dispose();
+    _contactController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _saveVendorProfile() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final newVendor = Vendor(
+      id: 'vd${DummyData.vendors.length + 1}',
+      name: _nameController.text.trim(),
+      category: _categoryController.text.trim(),
+      contactPerson: _contactController.text.trim(),
+      phone: _phoneController.text.trim(),
+      email: _emailController.text.trim(),
+      rating: 4.5,
+      isApproved: _isApproved,
+    );
+
+    setState(() {
+      DummyData.vendors.insert(0, newVendor);
+      _vendor = newVendor;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Vendor profile created for ${_vendor!.name}')),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final listings = DummyData.listings.where((l) => l.sellerName == _user.name).toList();
+
+    return Scaffold(
+      appBar: EstateAppBar(title: 'My Vendor Profile'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 52),
+        child: _vendor == null ? _buildCreateForm() : _buildProfile(listings),
+      ),
+    );
+  }
+
+  Widget _buildCreateForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Create vendor profile', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppTheme.textDark, fontWeight: FontWeight.w700)),
+        const SizedBox(height: 16),
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Vendor/Business name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter a vendor/business name';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _categoryController,
+                decoration: const InputDecoration(labelText: 'Category'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter a category';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _contactController,
+                decoration: const InputDecoration(labelText: 'Contact person'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter a contact name';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(labelText: 'Phone'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter a phone number';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Enter an email';
+                  if (!value.contains('@')) return 'Enter a valid email';
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _saveVendorProfile,
+                  child: const Text('Submit Vendor Profile'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfile(List<MarketListing> listings) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(colors: [AppTheme.primary, AppTheme.secondary], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_vendor!.name, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              StatusBadge(label: _vendor!.category, color: AppTheme.accent),
+              const SizedBox(height: 16),
+              Text('Contact', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+              const SizedBox(height: 4),
+              Text(_vendor!.contactPerson, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 4),
+              Text(_vendor!.phone, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+              const SizedBox(height: 4),
+              Text(_vendor!.email, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  const Icon(Icons.star_rounded, color: Colors.white, size: 16),
+                  const SizedBox(width: 4),
+                  Text(_vendor!.rating.toStringAsFixed(1), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+                  const SizedBox(width: 10),
+                  StatusBadge(label: _vendor!.isApproved ? 'Approved' : 'Pending', color: _vendor!.isApproved ? AppTheme.success : AppTheme.warning),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text('My Listings', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppTheme.textDark, fontWeight: FontWeight.w700)),
+        const SizedBox(height: 12),
+        if (listings.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppTheme.divider)),
+            child: const Text('You have no active listings yet.', style: TextStyle(color: AppTheme.textMid)),
+          )
+        else
+          ...listings.map((listing) => _vendorListingTile(listing)).toList(),
+      ],
+    );
+  }
+
+  Widget _vendorListingTile(MarketListing listing) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppTheme.divider)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(listing.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 6),
+          Text(listing.description, style: const TextStyle(fontSize: 12, color: AppTheme.textMid), maxLines: 2, overflow: TextOverflow.ellipsis),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Text('₦${NumberFormat('#,###').format(listing.price)}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+              const Spacer(),
+              StatusBadge(label: listing.isService ? 'Service' : 'Item', color: AppTheme.secondary),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class VendorsScreen extends StatelessWidget {
   const VendorsScreen({super.key});
 
@@ -426,7 +829,9 @@ class VendorsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EstateAppBar(title: 'Vendors', actions: [
-        IconButton(icon: const Icon(Icons.add_rounded, color: Colors.white), onPressed: () {}),
+        IconButton(icon: const Icon(Icons.person_pin_rounded, color: Colors.white), onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const VendorProfileScreen()));
+        }),
       ]),
       body: ListView.builder(
         padding: const EdgeInsets.fromLTRB(16,16,16,52),

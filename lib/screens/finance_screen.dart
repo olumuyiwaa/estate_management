@@ -97,7 +97,6 @@ class _OverviewTab extends StatelessWidget {
           Row(
             children: [
               const Expanded(child: SectionHeader(title: 'Yearly Income')),
-              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
@@ -114,7 +113,10 @@ class _OverviewTab extends StatelessWidget {
                     onChanged: (value) {
                       if (value != null) onYearChanged(value);
                     },
-                    icon: const Icon(Icons.calendar_today_rounded, size: 18, color: AppTheme.textMid),
+                    icon: const Padding(
+                      padding: EdgeInsets.only(left: 4),
+                      child: Icon(Icons.calendar_today_rounded, size: 18, color: AppTheme.textMid),
+                    ),
                     style: const TextStyle(color: AppTheme.textDark),
                   ),
                 ),
@@ -207,7 +209,7 @@ class _OverviewTab extends StatelessWidget {
           gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
-            getDrawingHorizontalLine: (_) => FlLine(color: AppTheme.divider, strokeWidth: 1),
+            getDrawingHorizontalLine: (_) => const FlLine(color: AppTheme.divider, strokeWidth: 1),
           ),
           borderData: FlBorderData(show: false),
           titlesData: FlTitlesData(
@@ -248,13 +250,13 @@ class _OverviewTab extends StatelessWidget {
                 color: Color(c['color'] as int),
                 value: c['amount'] as double,
                 showTitle: false,
-                radius: 50,
+                radius: 20,
               )).toList(),
               sectionsSpace: 2,
-              centerSpaceRadius: 28,
+              centerSpaceRadius: 50,
             )),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 24),
           Expanded(
             child: Column(
               children: cats.map((c) => Padding(

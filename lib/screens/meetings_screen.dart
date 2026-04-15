@@ -71,14 +71,7 @@ class _MeetingCard extends StatelessWidget {
         ? Uri.parse('calshow:${meeting.start.millisecondsSinceEpoch ~/ 1000}')
         : Uri.parse('content://com.android.calendar/time/${meeting.start.millisecondsSinceEpoch}');
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Unable to open phone calendar. Please add the event manually.')),
-    );
+    await launchUrl(uri);
   }
 
   @override

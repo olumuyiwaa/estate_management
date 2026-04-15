@@ -22,10 +22,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final ScrollController _scrollController = ScrollController();
   int _noticeIndex = 0;
   bool _showNotifications = false;
+  String greeting = '';
 
   @override
   void initState() {
     super.initState();
+    _determineGreeting();
     _scrollController.addListener(() {
       final shouldShow = _scrollController.offset > 10;
       if (shouldShow != _showNotifications) {
@@ -43,9 +45,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.dispose();
   }
 
+  void _determineGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 1 && hour < 12) {
+      greeting = "Morning";
+    } else if (hour >= 12 && hour < 17) {
+      greeting = "Afternoon";
+    } else {
+      greeting = "Evening";
+    }
+  }
+
+  double totalCollected = 0;
+
   @override
   Widget build(BuildContext context) {
     final user = DummyData.currentUser;
+    totalCollected = DummyData.totalCollected;
     final fmt = NumberFormat('#,###', 'en_US');
 
     return Scaffold(
@@ -61,6 +77,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(height: 24),
                 _buildQuickStats(fmt),
                 const SizedBox(height: 24),
+                SectionHeader(title: 'Payment Overview', actionLabel: 'View All',
+                  onAction: (){Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MainApp(pageIndex: 2,)),
+                        (route) => false,
+                  );},
+                ),
+                const SizedBox(height: 12),
+                _buildPaymentOverview(fmt),
+                const SizedBox(height: 24),
                 _buildNoticesBanner(context),
                 const SizedBox(height: 24),
                 _buildQuickActions(context),
@@ -74,16 +100,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 12),
                 _buildRecentIncidents(),
-                const SizedBox(height: 24),
-                SectionHeader(title: 'Payment Overview', actionLabel: 'View All',
-                  onAction: (){Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => const MainApp(pageIndex: 2,)),
-                        (route) => false,
-                  );},
-                ),
-                const SizedBox(height: 12),
-                _buildPaymentOverview(fmt),
                 const SizedBox(height: 100),
               ]),
             ),
@@ -120,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Good morning,',
+                            "Good $greeting",
                             style: TextStyle(color: Colors.white.withOpacity(0.75), fontSize: 14),
                           ),
                           Text(
@@ -209,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       childAspectRatio: 1.2,
       children: [
         StatCard(label: 'Total Members', value: '${DummyData.members.length}', icon: Icons.people_rounded, color: AppTheme.secondary, subtitle: '+2 this month'),
-        StatCard(label: 'Collected (₦)', value: '${fmt.format(DummyData.totalCollected / 1000)}K', icon: Icons.account_balance_wallet_rounded, color: AppTheme.accent),
+        StatCard(label: 'Collections (₦)', value: fmt.format(totalCollected), icon: Icons.account_balance_wallet_rounded, color: AppTheme.accent),
         StatCard(label: 'Open Issues', value: '$openIncidents', icon: Icons.report_problem_rounded, color: AppTheme.error),
         StatCard(label: 'Your Visitors Today', value: '$todayVisitors', icon: Icons.person_pin_rounded, color: AppTheme.info),
       ],
