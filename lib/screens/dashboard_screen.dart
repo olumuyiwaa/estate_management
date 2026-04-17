@@ -465,8 +465,8 @@ Widget _buildQuickActions(BuildContext context) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('₦${fmt.format(DummyData.totalCollected)} collected', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.success)),
-              Text('of ₦${fmt.format(DummyData.totalExpected)} expected', style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
+              Text('₦${fmt.format(DummyData.totalCollected)} Collected', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.success)),
+              Text('of ₦${fmt.format(DummyData.totalBudget)} Budget', style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
             ],
           ),
         ],

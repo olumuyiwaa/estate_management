@@ -28,6 +28,8 @@ class DummyData {
     PaymentRecord(id: 'p7', memberId: 'm8', memberName: 'Taiwo Adeleke', description: 'Generator Levy Feb', unitNumber: 'D-402', amount: 15000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), category: 'Generator Levy'),
     PaymentRecord(id: 'p8', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Security Levy Q1', unitNumber: 'C-301', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
     PaymentRecord(id: 'p11', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Security Levy Q1', unitNumber: 'A-101', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
+    PaymentRecord(id: 'p14', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Event Hall Booking Advance', unitNumber: 'A-102', amount: 1200000, status: PaymentStatus.paid, dueDate: DateTime(2026, 4, 30), paidDate: DateTime(2026, 4, 10), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p15', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Security Upgrade Contribution', unitNumber: 'B-201', amount: 800000, status: PaymentStatus.paid, dueDate: DateTime(2026, 5, 15), paidDate: DateTime(2026, 4, 12), category: 'Security Levy'),
   ];
 
   // ── Incidents ─────────────────────────────────────────────────────────────
@@ -88,9 +90,9 @@ class DummyData {
 
   // ── Financial summary ─────────────────────────────────────────────────────
   static const double totalBudget = 5000000;
-  static const double totalExpenses = 2125000;
-  static const double totalCollected = 2850000;
-  static const double totalExpected = 3600000;
+  static double get totalExpenses => expenseCategories.fold<double>(0, (sum, entry) => sum + (entry['amount'] as double));
+  static double get totalCollected => payments.where((p) => p.status == PaymentStatus.paid).fold<double>(0, (sum, payment) => sum + payment.amount);
+  static double get totalExpected => payments.fold<double>(0, (sum, payment) => sum + payment.amount);
 
   static final List<Map<String, dynamic>> monthlyIncome = [
     {'month': 'Oct', 'amount': 420000.0},
