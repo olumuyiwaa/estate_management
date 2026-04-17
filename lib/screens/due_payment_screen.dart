@@ -301,7 +301,7 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
   }
 
   void _showReceipt(PaymentRecord payment) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentReceiptScreen(payment: payment, method: _gatewayMethodLabel(_selectedMethod))));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentReceiptScreen(payment: payment)));
   }
 
   String _gatewayMethodLabel(PaymentGatewayMethod method) {
@@ -325,9 +325,8 @@ class _DuePaymentScreenState extends State<DuePaymentScreen> {
 
 class PaymentReceiptScreen extends StatelessWidget {
   final PaymentRecord payment;
-  final String method;
 
-  const PaymentReceiptScreen({super.key, required this.payment, required this.method});
+  const PaymentReceiptScreen({super.key, required this.payment});
 
   @override
   Widget build(BuildContext context) {
@@ -358,7 +357,6 @@ class PaymentReceiptScreen extends StatelessWidget {
                   _buildReceiptItem('Amount Paid', '₦${_format(payment.amount)}'),
                   _buildReceiptItem('Category', payment.category),
                   _buildReceiptItem('Status', paymentStatusLabel(payment.status)),
-                  _buildReceiptItem('Payment Method', method),
                   _buildReceiptItem('Invoice Date', _formatDate(DateTime.now())),
                   if (payment.paidDate != null) _buildReceiptItem('Paid On', _formatDate(payment.paidDate!)),
                   _buildReceiptItem('Due Date', _formatDate(payment.dueDate)),

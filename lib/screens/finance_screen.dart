@@ -126,7 +126,11 @@ class _OverviewTab extends StatelessWidget {
           const SizedBox(height: 12),
           _buildBarChart(),
           const SizedBox(height: 20),
-          const SectionHeader(title: 'Expense Breakdown'),
+          SectionHeader(title: '${DateTime.now().year} Income Breakdown'),
+          const SizedBox(height: 12),
+          _buildIncomeBreakdown(),
+          const SizedBox(height: 20),
+          SectionHeader(title: '${DateTime.now().year} Expense Breakdown'),
           const SizedBox(height: 12),
           _buildPieSection(),
           const SizedBox(height: 100),
@@ -232,6 +236,80 @@ class _OverviewTab extends StatelessWidget {
     );
   }
 
+  Widget _buildIncomeBreakdown() {
+    final categories = _incomeCategories();
+    final total = categories.fold<double>(0, (sum, entry) => sum + (entry['amount'] as double));
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.divider),
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 120,
+            height: 120,
+            child: PieChart(
+              PieChartData(
+                sections: categories.map((c) => PieChartSectionData(
+                  color: Color(c['color'] as int),
+                  value: c['amount'] as double,
+                  showTitle: false,
+                  radius: 16,
+                )).toList(),
+                centerSpaceRadius: 44,
+                sectionsSpace: 2,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              children: categories.map((c) {
+                final amount = c['amount'] as double;
+                final percent = total > 0 ? (amount / total * 100).round() : 0;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Container(width: 10, height: 10, decoration: BoxDecoration(color: Color(c['color'] as int), borderRadius: BorderRadius.circular(3))),
+                      const SizedBox(width: 10),
+                      Expanded(child: Text(c['name'] as String, style: const TextStyle(fontSize: 12, color: AppTheme.textDark))),
+                      Text('₦${fmt.format(amount)}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textMid)),
+                      // const SizedBox(width: 8),
+                      // Text('$percent%', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Map<String, dynamic>> _incomeCategories() {
+    final totals = <String, double>{};
+    for (final payment in DummyData.payments) {
+      totals[payment.category] = (totals[payment.category] ?? 0) + payment.amount;
+    }
+
+    final colors = [0xFF47B5FF, 0xFF2A9D8F, 0xFFF4A261, 0xFFE63946, 0xFF606C38];
+    var colorIndex = 0;
+
+    return totals.entries.map((entry) {
+      return {
+        'name': entry.key,
+        'amount': entry.value,
+        'color': colors[(colorIndex++) % colors.length],
+      };
+    }).toList();
+  }
+
   Widget _buildPieSection() {
     final cats = DummyData.expenseCategories;
     return Container(
@@ -250,10 +328,10 @@ class _OverviewTab extends StatelessWidget {
                 color: Color(c['color'] as int),
                 value: c['amount'] as double,
                 showTitle: false,
-                radius: 20,
+                radius: 16,
               )).toList(),
               sectionsSpace: 2,
-              centerSpaceRadius: 50,
+              centerSpaceRadius: 44,
             )),
           ),
           const SizedBox(width: 24),
@@ -291,46 +369,49 @@ class _PaymentsTab extends StatelessWidget {
       itemBuilder: (_, i) {
         final p = DummyData.payments[i];
         final color = paymentStatusColor(p.status);
-        return Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppTheme.divider),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 42, height: 42,
-                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
-                child: Icon(
-                  p.status == PaymentStatus.paid ? Icons.check_circle_outline : Icons.pending_outlined,
-                  color: color, size: 22,
+        return GestureDetector(
+          onTap: () =>     Navigator.push(context, MaterialPageRoute(builder: (_) => PaymentReceiptScreen(payment: p))),
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AppTheme.divider),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 42, height: 42,
+                  decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                  child: Icon(
+                    p.status == PaymentStatus.paid ? Icons.check_circle_outline : Icons.pending_outlined,
+                    color: color, size: 22,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(p.memberName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-                    Text('${p.description} · Unit ${p.unitNumber}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
-                    Text('Due: ${DateFormat('dd MMM yyyy').format(p.dueDate)}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
-                  ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(p.memberName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                      Text('${p.description} · Unit ${p.unitNumber}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                      Text('Due: ${DateFormat('dd MMM yyyy').format(p.dueDate)}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('₦${fmt.format(p.amount)}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textDark)),
-                    StatusBadge(label: paymentStatusLabel(p.status), color: color),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('₦${fmt.format(p.amount)}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textDark)),
+                      StatusBadge(label: paymentStatusLabel(p.status), color: color),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -344,12 +425,12 @@ class _ExpensesTab extends StatelessWidget {
   const _ExpensesTab({required this.fmt});
 
   static final List<Map<String, dynamic>> _expenses = [
-    {'desc': 'GuardPro Security – April', 'category': 'Security', 'date': '01 Apr 2025', 'amount': 180000.0, 'status': 'Paid'},
-    {'desc': 'Diesel Purchase – Generator', 'category': 'Generator', 'date': '03 Apr 2025', 'amount': 75000.0, 'status': 'Paid'},
-    {'desc': 'CleanPro Monthly Contract', 'category': 'Cleaning', 'date': '05 Apr 2025', 'amount': 65000.0, 'status': 'Paid'},
-    {'desc': 'Elevator Maintenance – Block C', 'category': 'Maintenance', 'date': '08 Apr 2025', 'amount': 120000.0, 'status': 'Pending'},
-    {'desc': 'Street Light Repairs', 'category': 'Maintenance', 'date': '09 Apr 2025', 'amount': 45000.0, 'status': 'Pending'},
-    {'desc': 'Office Supplies & Stationery', 'category': 'Admin', 'date': '02 Apr 2025', 'amount': 22000.0, 'status': 'Paid'},
+    {'desc': 'GuardPro Security – April', 'category': 'Security', 'date': '01 Apr 2026', 'amount': 180000.0, 'status': 'Paid'},
+    {'desc': 'Diesel Purchase – Generator', 'category': 'Generator', 'date': '03 Apr 2026', 'amount': 75000.0, 'status': 'Paid'},
+    {'desc': 'CleanPro Monthly Contract', 'category': 'Cleaning', 'date': '05 Apr 2026', 'amount': 65000.0, 'status': 'Paid'},
+    {'desc': 'Elevator Maintenance – Block C', 'category': 'Maintenance', 'date': '08 Apr 2026', 'amount': 120000.0, 'status': 'Pending'},
+    {'desc': 'Street Light Repairs', 'category': 'Maintenance', 'date': '09 Apr 2026', 'amount': 45000.0, 'status': 'Pending'},
+    {'desc': 'Office Supplies & Stationery', 'category': 'Admin', 'date': '02 Apr 2026', 'amount': 22000.0, 'status': 'Paid'},
   ];
 
   @override

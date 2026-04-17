@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../widgets/widgets.dart';
 import '../models/models.dart';
 import 'due_payment_screen.dart';
+import 'incidents_screen.dart';
 import 'more_screens.dart';
 import 'group_chat_screen.dart';
 
@@ -99,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   );},
                 ),
                 const SizedBox(height: 12),
-                _buildRecentIncidents(),
+                _buildRecentIncidents(context),
                 const SizedBox(height: 100),
               ]),
             ),
@@ -248,7 +249,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             itemBuilder: (_, index) {
               final item = pinned[index];
               return GestureDetector(
-                onTap: () => _showNoticeOverlay(context, item),
+                onTap: () => showNoticeOverlay(context, item),
                 child: Container(
                   margin: const EdgeInsets.only(right: 8),
                   padding: const EdgeInsets.all(16),
@@ -315,61 +316,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ],
     );
   }
+}
 
-  void _showNoticeOverlay(BuildContext context, Notice notice) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-      isScrollControlled: true,
-      builder: (_) {
-        return Padding(
-          padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: MediaQuery.of(context).viewInsets.bottom + 52),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(color: AppTheme.accent.withOpacity(0.14), borderRadius: BorderRadius.circular(14)),
-                    child: const Icon(Icons.campaign_rounded, color: AppTheme.accent, size: 26),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(notice.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  StatusBadge(label: notice.category, color: AppTheme.accent),
-                  const SizedBox(width: 10),
-                  Text('Posted by ${notice.postedBy}', style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
-                  const Spacer(),
-                  Text(DateFormat('dd MMM yyyy').format(notice.postedAt), style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Text(notice.body, style: const TextStyle(fontSize: 14, height: 1.6, color: AppTheme.textDark)),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Close'),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
-  Widget _buildQuickActions(BuildContext context) {
+Widget _buildQuickActions(BuildContext context) {
     final actions = [
       {'icon': Icons.payment_rounded, 'label': 'Pay Dues', 'color': AppTheme.success, 'page': const DuePaymentScreen()},
       {'icon': Icons.report_rounded, 'label': 'Report Issue', 'color': AppTheme.error, 'page': const MainApp(pageIndex: 4,)},
@@ -436,37 +386,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildRecentIncidents() {
+  Widget _buildRecentIncidents(BuildContext context) {
     final recent = DummyData.incidents.where((i) => i.status != IncidentStatus.resolved).take(3).toList();
     return Column(
       children: recent.map((i) => Padding(
         padding: const EdgeInsets.only(bottom: 10),
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppTheme.divider),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 8, height: 8,
-                decoration: BoxDecoration(color: priorityColor(i.priority), shape: BoxShape.circle),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(i.title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600), maxLines: 1, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 2),
-                    Text('${i.location} · ${i.reportedBy.split(' ')[0]}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
-                  ],
+        child: GestureDetector(
+          onTap: () => showIncidentDetailSheet(context, i),
+          child: Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AppTheme.divider),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 8, height: 8,
+                  decoration: BoxDecoration(color: priorityColor(i.priority), shape: BoxShape.circle),
                 ),
-              ),
-              StatusBadge(label: incidentStatusLabel(i.status), color: incidentStatusColor(i.status)),
-            ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(i.title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 2),
+                      Text('${i.location} · ${i.reportedBy.split(' ')[0]}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                    ],
+                  ),
+                ),
+                StatusBadge(label: incidentStatusLabel(i.status), color: incidentStatusColor(i.status)),
+              ],
+            ),
           ),
         ),
       )).toList(),
@@ -529,4 +482,3 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ],
     );
   }
-}

@@ -15,26 +15,28 @@ class DummyData {
 
   // ── Payments ──────────────────────────────────────────────────────────────
   static final List<PaymentRecord> payments = [
-    PaymentRecord(id: 'p1', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Service Charge Q1 2025', unitNumber: 'A-101', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2025, 3, 31), paidDate: DateTime(2025, 3, 15), category: 'Service Charge'),
-    PaymentRecord(id: 'p2', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Service Charge Q1 2025', unitNumber: 'A-102', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2025, 3, 31), paidDate: DateTime(2025, 3, 18), category: 'Service Charge'),
-    PaymentRecord(id: 'p3', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Service Charge Q1 2025', unitNumber: 'B-201', amount: 75000, status: PaymentStatus.pending, dueDate: DateTime(2025, 3, 31), category: 'Service Charge'),
-    PaymentRecord(id: 'p4', memberId: 'm4', memberName: 'Babatunde Lawal', description: 'Generator Levy Jan', unitNumber: 'B-202', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2025, 1, 31), category: 'Generator Levy'),
-    PaymentRecord(id: 'p9', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Generator Levy Jan', unitNumber: 'A-101', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2025, 1, 31), category: 'Generator Levy'),
-    PaymentRecord(id: 'p5', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Waste Management Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2025, 2, 28), paidDate: DateTime(2025, 2, 20), category: 'Waste Management'),
-    PaymentRecord(id: 'p10', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Waste Management Fee', unitNumber: 'A-101', amount: 5000, status: PaymentStatus.pending, dueDate: DateTime(2025, 2, 28), paidDate: DateTime(2025, 2, 20), category: 'Waste Management'),
-    PaymentRecord(id: 'p6', memberId: 'm6', memberName: 'Kayode Afolabi', description: 'Service Charge Q1 2025', unitNumber: 'C-302', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2025, 3, 31), paidDate: DateTime(2025, 3, 5), category: 'Service Charge'),
-    PaymentRecord(id: 'p7', memberId: 'm8', memberName: 'Taiwo Adeleke', description: 'Generator Levy Feb', unitNumber: 'D-402', amount: 15000, status: PaymentStatus.pending, dueDate: DateTime(2025, 2, 28), category: 'Generator Levy'),
-    PaymentRecord(id: 'p8', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Security Levy Q1', unitNumber: 'C-301', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2025, 1, 15), category: 'Security Levy'),
-    PaymentRecord(id: 'p11', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Security Levy Q1', unitNumber: 'A-101', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2025, 1, 15), category: 'Security Levy'),
+    PaymentRecord(id: 'p1', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Service Charge Q1 2026', unitNumber: 'A-101', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 15), category: 'Service Charge'),
+    PaymentRecord(id: 'p2', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Service Charge Q1 2026', unitNumber: 'A-102', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 18), category: 'Service Charge'),
+    PaymentRecord(id: 'p3', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Service Charge Q1 2026', unitNumber: 'B-201', amount: 75000, status: PaymentStatus.pending, dueDate: DateTime(2026, 3, 31), category: 'Service Charge'),
+    PaymentRecord(id: 'p4', memberId: 'm4', memberName: 'Babatunde Lawal', description: 'Generator Levy Jan', unitNumber: 'B-202', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 31), category: 'Generator Levy'),
+    PaymentRecord(id: 'p9', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Generator Levy Jan', unitNumber: 'A-101', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 31), category: 'Generator Levy'),
+    PaymentRecord(id: 'p5', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Waste Management Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 2, 20), category: 'Waste Management'),
+    PaymentRecord(id: 'p12', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Clubhouse Booking Fee', unitNumber: 'C-301', amount: 25000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 4, 14), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p13', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Swimming Pool Booking Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 4, 13), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p10', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Waste Management Fee', unitNumber: 'A-101', amount: 5000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 2, 20), category: 'Waste Management'),
+    PaymentRecord(id: 'p6', memberId: 'm6', memberName: 'Kayode Afolabi', description: 'Service Charge Q1 2026', unitNumber: 'C-302', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 5), category: 'Service Charge'),
+    PaymentRecord(id: 'p7', memberId: 'm8', memberName: 'Taiwo Adeleke', description: 'Generator Levy Feb', unitNumber: 'D-402', amount: 15000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), category: 'Generator Levy'),
+    PaymentRecord(id: 'p8', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Security Levy Q1', unitNumber: 'C-301', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
+    PaymentRecord(id: 'p11', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Security Levy Q1', unitNumber: 'A-101', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
   ];
 
   // ── Incidents ─────────────────────────────────────────────────────────────
   static final List<Incident> incidents = [
-    Incident(id: 'i1', reportedBy: 'Adaeze Okonkwo', title: 'Street Light Out – Block B Entrance', description: 'The street light at Block B entrance has been off for 3 days causing security concerns at night.', location: 'Block B Entrance', status: IncidentStatus.inProgress, priority: TicketPriority.high, reportedAt: DateTime(2025, 4, 8), assignedTo: 'Amaka Nwosu'),
-    Incident(id: 'i2', reportedBy: 'Fatima Al-Hassan', title: 'Burst Pipe – B-201 Bathroom', description: 'Water pipe burst under bathroom sink, causing water damage to floor.', location: 'Unit B-201', status: IncidentStatus.open, priority: TicketPriority.urgent, reportedAt: DateTime(2025, 4, 10)),
-    Incident(id: 'i3', reportedBy: 'Ngozi Dike', title: 'Elevator Malfunction – Block C', description: 'Elevator in Block C stopped working. Residents unable to use it.', location: 'Block C', status: IncidentStatus.inProgress, priority: TicketPriority.urgent, reportedAt: DateTime(2025, 4, 7), assignedTo: 'Amaka Nwosu'),
-    Incident(id: 'i4', reportedBy: 'Babatunde Lawal', title: 'Pothole – Main Driveway', description: 'Large pothole near the main gate entrance, risk of vehicle damage.', location: 'Main Driveway', status: IncidentStatus.open, priority: TicketPriority.medium, reportedAt: DateTime(2025, 4, 5)),
-    Incident(id: 'i5', reportedBy: 'Taiwo Adeleke', title: 'Noisy Generator – Night Hours', description: 'Generator running excessively loud after 11 PM, disturbing sleep.', location: 'Generator House', status: IncidentStatus.resolved, priority: TicketPriority.low, reportedAt: DateTime(2025, 4, 1), assignedTo: 'Amaka Nwosu'),
+    Incident(id: 'i1', reportedBy: 'Adaeze Okonkwo', title: 'Street Light Out – Block B Entrance', description: 'The street light at Block B entrance has been off for 3 days causing security concerns at night.', location: 'Block B Entrance', status: IncidentStatus.inProgress, priority: TicketPriority.high, reportedAt: DateTime(2026, 4, 8), assignedTo: 'Amaka Nwosu'),
+    Incident(id: 'i2', reportedBy: 'Fatima Al-Hassan', title: 'Burst Pipe – B-201 Bathroom', description: 'Water pipe burst under bathroom sink, causing water damage to floor.', location: 'Unit B-201', status: IncidentStatus.open, priority: TicketPriority.urgent, reportedAt: DateTime(2026, 4, 10)),
+    Incident(id: 'i3', reportedBy: 'Ngozi Dike', title: 'Elevator Malfunction – Block C', description: 'Elevator in Block C stopped working. Residents unable to use it.', location: 'Block C', status: IncidentStatus.inProgress, priority: TicketPriority.urgent, reportedAt: DateTime(2026, 4, 7), assignedTo: 'Amaka Nwosu'),
+    Incident(id: 'i4', reportedBy: 'Babatunde Lawal', title: 'Pothole – Main Driveway', description: 'Large pothole near the main gate entrance, risk of vehicle damage.', location: 'Main Driveway', status: IncidentStatus.open, priority: TicketPriority.medium, reportedAt: DateTime(2026, 4, 5)),
+    Incident(id: 'i5', reportedBy: 'Taiwo Adeleke', title: 'Noisy Generator – Night Hours', description: 'Generator running excessively loud after 11 PM, disturbing sleep.', location: 'Generator House', status: IncidentStatus.resolved, priority: TicketPriority.low, reportedAt: DateTime(2026, 4, 1), assignedTo: 'Amaka Nwosu'),
   ];
 
   // ── Visitors ──────────────────────────────────────────────────────────────
@@ -50,20 +52,20 @@ class DummyData {
 
   // ── Facility Bookings ─────────────────────────────────────────────────────
   static final List<FacilityBooking> bookings = [
-    FacilityBooking(id: 'fb1', facilityName: 'Swimming Pool', bookedBy: 'Adaeze Okonkwo', unit: 'A-101', date: DateTime(2025, 4, 13), timeSlot: '10:00 AM – 12:00 PM', status: BookingStatus.confirmed, fee: 5000),
-    FacilityBooking(id: 'fb2', facilityName: 'Clubhouse', bookedBy: 'Taiwo Adeleke', unit: 'D-402', date: DateTime(2025, 4, 14), timeSlot: '4:00 PM – 8:00 PM', status: BookingStatus.confirmed, fee: 25000),
-    FacilityBooking(id: 'fb3', facilityName: 'Tennis Court', bookedBy: 'Kayode Afolabi', unit: 'C-302', date: DateTime(2025, 4, 12), timeSlot: '7:00 AM – 9:00 AM', status: BookingStatus.pending, fee: 3000),
-    FacilityBooking(id: 'fb4', facilityName: 'Event Hall', bookedBy: 'Ngozi Dike', unit: 'C-301', date: DateTime(2025, 4, 20), timeSlot: '2:00 PM – 10:00 PM', status: BookingStatus.pending, fee: 80000),
-    FacilityBooking(id: 'fb5', facilityName: 'Gym', bookedBy: 'Fatima Al-Hassan', unit: 'B-201', date: DateTime(2025, 4, 11), timeSlot: '6:00 AM – 7:00 AM', status: BookingStatus.cancelled, fee: 2000),
+    FacilityBooking(id: 'fb1', facilityName: 'Swimming Pool', bookedBy: 'Adaeze Okonkwo', unit: 'A-101', date: DateTime(2026, 4, 13), timeSlot: '10:00 AM – 12:00 PM', status: BookingStatus.confirmed, fee: 5000),
+    FacilityBooking(id: 'fb2', facilityName: 'Clubhouse', bookedBy: 'Taiwo Adeleke', unit: 'D-402', date: DateTime(2026, 4, 14), timeSlot: '4:00 PM – 8:00 PM', status: BookingStatus.confirmed, fee: 25000),
+    FacilityBooking(id: 'fb3', facilityName: 'Tennis Court', bookedBy: 'Kayode Afolabi', unit: 'C-302', date: DateTime(2026, 4, 12), timeSlot: '7:00 AM – 9:00 AM', status: BookingStatus.pending, fee: 3000),
+    FacilityBooking(id: 'fb4', facilityName: 'Event Hall', bookedBy: 'Ngozi Dike', unit: 'C-301', date: DateTime(2026, 4, 20), timeSlot: '2:00 PM – 10:00 PM', status: BookingStatus.pending, fee: 80000),
+    FacilityBooking(id: 'fb5', facilityName: 'Gym', bookedBy: 'Fatima Al-Hassan', unit: 'B-201', date: DateTime(2026, 4, 11), timeSlot: '6:00 AM – 7:00 AM', status: BookingStatus.cancelled, fee: 2000),
   ];
 
   // ── Notices ───────────────────────────────────────────────────────────────
   static final List<Notice> notices = [
     Notice(id: 'n1', title: 'Water Shutdown – Saturday 12 April', body: 'There will be a scheduled water shutdown on Saturday 12 April from 8 AM to 2 PM for maintenance work. Please store sufficient water. Apologies for the inconvenience.', category: 'Maintenance', postedBy: 'Estate Management', postedAt: DateTime.now().subtract(const Duration(hours: 3)), isPinned: true),
-    Notice(id: 'n2', title: 'AGM – Sunday 27 April 2025', body: 'The Annual General Meeting will hold on Sunday 27 April at 4 PM in the Estate Clubhouse. All owners and residents are encouraged to attend. Agenda will be shared separately.', category: 'Meeting', postedBy: 'Exco', postedAt: DateTime.now().subtract(const Duration(days: 1)), isPinned: true),
+    Notice(id: 'n2', title: 'AGM – Sunday 27 April 2026', body: 'The Annual General Meeting will hold on Sunday 27 April at 4 PM in the Estate Clubhouse. All owners and residents are encouraged to attend. Agenda will be shared separately.', category: 'Meeting', postedBy: 'Exco', postedAt: DateTime.now().subtract(const Duration(days: 1)), isPinned: true),
     Notice(id: 'n3', title: 'New Waste Collection Schedule', body: 'Starting May 1st, waste collection will be every Monday and Thursday morning. Bins must be placed outside by 7 AM on collection days.', category: 'General', postedBy: 'Estate Management', postedAt: DateTime.now().subtract(const Duration(days: 2)), isPinned: false),
     Notice(id: 'n4', title: 'Estate Market Day – 19 April', body: 'Our monthly estate market day is back! Residents can sell goods and services. Book your spot by contacting the estate office.', category: 'Community', postedBy: 'Exco', postedAt: DateTime.now().subtract(const Duration(days: 3)), isPinned: false),
-    Notice(id: 'n5', title: 'Reminder: Service Charge Q1 Due Date', body: 'Please note that Q1 2025 service charges are due by March 31st. Payments can be made via the app or estate account. Late payments attract a 10% penalty.', category: 'Finance', postedBy: 'Finance Committee', postedAt: DateTime.now().subtract(const Duration(days: 5)), isPinned: false),
+    Notice(id: 'n5', title: 'Reminder: Service Charge Q1 Due Date', body: 'Please note that Q1 2026 service charges are due by March 31st. Payments can be made via the app or estate account. Late payments attract a 10% penalty.', category: 'Finance', postedBy: 'Finance Committee', postedAt: DateTime.now().subtract(const Duration(days: 5)), isPinned: false),
   ];
 
   // ── Vendors ───────────────────────────────────────────────────────────────
@@ -100,11 +102,25 @@ class DummyData {
   ];
 
   static final Map<int, List<Map<String, dynamic>>> yearlyIncome = {
-    2025: [
+    2026: [
       {'month': 'Jan', 'amount': 420000.0},
       {'month': 'Feb', 'amount': 395000.0},
       {'month': 'Mar', 'amount': 510000.0},
       {'month': 'Apr', 'amount': 470000.0},
+      {'month': 'May', 'amount': 0.0},
+      {'month': 'Jun', 'amount': 0.0},
+      {'month': 'Jul', 'amount': 0.0},
+      {'month': 'Aug', 'amount': 0.0},
+      {'month': 'Sep', 'amount': 0.0},
+      {'month': 'Oct', 'amount': 0.0},
+      {'month': 'Nov', 'amount': 0.0},
+      {'month': 'Dec', 'amount': 0.0},
+    ],
+    2025: [
+      {'month': 'Jan', 'amount': 220000.0},
+      {'month': 'Feb', 'amount': 495000.0},
+      {'month': 'Mar', 'amount': 580000.0},
+      {'month': 'Apr', 'amount': 420000.0},
       {'month': 'May', 'amount': 445000.0},
       {'month': 'Jun', 'amount': 500000.0},
       {'month': 'Jul', 'amount': 525000.0},
@@ -193,21 +209,21 @@ class DummyData {
       id: 'mm1',
       title: 'Exco Strategy Review',
       summary: 'Conducted an in-depth review of the Q2 maintenance budget with line items for road resurfacing, landscaping upgrades, and generator servicing. Agreed to prioritize urgent repairs in the shared parking area, allocate contingency funds for unforeseen site works, and engage a contractor by mid-April. Action items were assigned to facility leads, with weekly progress check-ins scheduled to ensure milestones are met by the first 10 days of April.',
-      date: DateTime(2025, 3, 26),
+      date: DateTime(2026, 3, 26),
       author: 'Kayode Afolabi',
     ),
     MeetingMinute(
       id: 'mm2',
       title: 'Security Update',
       summary: 'Approved the purchase and installation of 12 new CCTV cameras covering the main gate, visitor entrance, and perimeter walkways. Decided to increase evening perimeter patrols Monday through Saturday and to introduce a visitor logging audit every fortnight. The team also reviewed recent incident reports and agreed to update security response protocols with a 15-minute escalation window for all high-priority alerts.',
-      date: DateTime(2025, 3, 15),
+      date: DateTime(2026, 3, 15),
       author: 'Amaka Nwosu',
     ),
     MeetingMinute(
       id: 'mm3',
       title: 'Facility Booking Policy',
       summary: 'Finalized new facility booking rules, including a 48-hour cancellation window, a 20% late cancellation penalty, and a clear refund policy for event hall reservations. Clarified payment deadlines for pool and gym slots, introduced advance notice requirements for large groups, and agreed to publish the updated booking terms across estate notice boards and the app. The new policy will take effect from May 1st to reduce no-shows and improve facility availability.',
-      date: DateTime(2025, 2, 28),
+      date: DateTime(2026, 2, 28),
       author: 'Ngozi Dike',
     ),
   ];
@@ -217,24 +233,24 @@ class DummyData {
       id: 'me1',
       title: 'Annual General Meeting',
       location: 'Estate Clubhouse',
-      start: DateTime(2025, 4, 27, 16, 0),
-      end: DateTime(2025, 4, 27, 18, 0),
+      start: DateTime(2026, 4, 27, 16, 0),
+      end: DateTime(2026, 4, 27, 18, 0),
       agenda: 'Review annual reports, budget approval, and community proposal voting.',
     ),
     MeetingEvent(
       id: 'me2',
       title: 'Facility Team Coordination',
       location: 'Facility Office',
-      start: DateTime(2025, 4, 14, 10, 0),
-      end: DateTime(2025, 4, 14, 11, 0),
+      start: DateTime(2026, 4, 14, 10, 0),
+      end: DateTime(2026, 4, 14, 11, 0),
       agenda: 'Align on maintenance schedule and resource allocation for April.',
     ),
     MeetingEvent(
       id: 'me3',
       title: 'Security Briefing',
       location: 'Security Control Room',
-      start: DateTime(2025, 4, 18, 9, 30),
-      end: DateTime(2025, 4, 18, 10, 15),
+      start: DateTime(2026, 4, 18, 9, 30),
+      end: DateTime(2026, 4, 18, 10, 15),
       agenda: 'Review visitor access logs and adjust night patrol rotas.',
     ),
   ];

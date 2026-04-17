@@ -53,54 +53,112 @@ class _NoticeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = _catColor();
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: notice.isPinned ? color.withOpacity(0.4) : AppTheme.divider),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.06),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: Row(
-              children: [
-                if (notice.isPinned) ...[
-                  const Icon(Icons.push_pin_rounded, size: 14, color: AppTheme.accent),
-                  const SizedBox(width: 4),
+    return GestureDetector(
+      onTap: () => showNoticeOverlay(context, notice),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: notice.isPinned ? color.withOpacity(0.4) : AppTheme.divider),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.06),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: Row(
+                children: [
+                  if (notice.isPinned) ...[
+                    const Icon(Icons.push_pin_rounded, size: 14, color: AppTheme.accent),
+                    const SizedBox(width: 4),
+                  ],
+                  StatusBadge(label: notice.category, color: color),
+                  const Spacer(),
+                  Text(
+                    DateFormat('dd MMM, h:mm a').format(notice.postedAt),
+                    style: const TextStyle(fontSize: 10, color: AppTheme.textMid),
+                  ),
                 ],
-                StatusBadge(label: notice.category, color: color),
-                const Spacer(),
-                Text(
-                  DateFormat('dd MMM, h:mm a').format(notice.postedAt),
-                  style: const TextStyle(fontSize: 10, color: AppTheme.textMid),
-                ),
-              ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(notice.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 6),
-                Text(notice.body, style: const TextStyle(fontSize: 12, color: AppTheme.textMid, height: 1.5), maxLines: 3, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 8),
-                Text('Posted by ${notice.postedBy}', style: const TextStyle(fontSize: 11, color: AppTheme.textLight)),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(notice.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+                  const SizedBox(height: 6),
+                  Text(notice.body, style: const TextStyle(fontSize: 12, color: AppTheme.textMid, height: 1.5), maxLines: 3, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 8),
+                  Text('Posted by ${notice.postedBy}', style: const TextStyle(fontSize: 11, color: AppTheme.textLight)),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+}
+
+
+void showNoticeOverlay(BuildContext context, Notice notice) {
+  showModalBottomSheet(
+    backgroundColor: Colors.white,
+    context: context,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+    isScrollControlled: true,
+    builder: (_) {
+      return Padding(
+        padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: MediaQuery.of(context).viewInsets.bottom + 52),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(color: AppTheme.accent.withOpacity(0.14), borderRadius: BorderRadius.circular(14)),
+                  child: const Icon(Icons.campaign_rounded, color: AppTheme.accent, size: 26),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(notice.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                StatusBadge(label: notice.category, color: AppTheme.accent),
+                const SizedBox(width: 10),
+                Text('Posted by ${notice.postedBy}', style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
+                const Spacer(),
+                Text(DateFormat('dd MMM yyyy').format(notice.postedAt), style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Text(notice.body, style: const TextStyle(fontSize: 14, height: 1.6, color: AppTheme.textDark)),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 // ── Facility Booking ──────────────────────────────────────────────────────

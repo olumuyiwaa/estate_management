@@ -235,7 +235,7 @@ class _IncidentCard extends StatelessWidget {
     final dateFmt = DateFormat('dd MMM, h:mm a').format(incident.reportedAt);
 
     return GestureDetector(
-      onTap: () => _showDetail(context),
+      onTap: () => showIncidentDetailSheet(context, incident),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
@@ -297,59 +297,61 @@ class _IncidentCard extends StatelessWidget {
     );
   }
 
-  void _showDetail(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (_) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        minChildSize: 0.4,
-        maxChildSize: 0.9,
-        expand: false,
-        builder: (_, ctrl) => Padding(
-          padding: const EdgeInsets.all(24),
-          child: ListView(
-            controller: ctrl,
-            children: [
-              Row(
-                children: [
-                  Expanded(child: Text(incident.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
-                  StatusBadge(label: incidentStatusLabel(incident.status), color: incidentStatusColor(incident.status)),
-                ],
-              ),
-              const SizedBox(height: 16),
-              _detailRow(Icons.location_on_outlined, 'Location', incident.location),
-              _detailRow(Icons.person_outline_rounded, 'Reported By', incident.reportedBy),
-              _detailRow(Icons.access_time_rounded, 'Reported At', DateFormat('dd MMM yyyy, h:mm a').format(incident.reportedAt)),
-              if (incident.assignedTo != null)
-                _detailRow(Icons.engineering_outlined, 'Assigned To', incident.assignedTo!),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(color: AppTheme.surface, borderRadius: BorderRadius.circular(12)),
-                child: Text(incident.description, style: const TextStyle(fontSize: 13, color: AppTheme.textMid, height: 1.5)),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('Update Status')),
-            ],
-          ),
+}
+
+void showIncidentDetailSheet(BuildContext context, Incident incident) {
+  showModalBottomSheet(
+    backgroundColor: Colors.white,
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    builder: (_) => DraggableScrollableSheet(
+      initialChildSize: 0.7,
+      minChildSize: 0.4,
+      maxChildSize: 0.9,
+      expand: false,
+      builder: (_, ctrl) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: ListView(
+          controller: ctrl,
+          children: [
+            Row(
+              children: [
+                Expanded(child: Text(incident.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
+                StatusBadge(label: incidentStatusLabel(incident.status), color: incidentStatusColor(incident.status)),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _detailRow(Icons.location_on_outlined, 'Location', incident.location),
+            _detailRow(Icons.person_outline_rounded, 'Reported By', incident.reportedBy),
+            _detailRow(Icons.access_time_rounded, 'Reported At', DateFormat('dd MMM yyyy, h:mm a').format(incident.reportedAt)),
+            if (incident.assignedTo != null)
+              _detailRow(Icons.engineering_outlined, 'Assigned To', incident.assignedTo!),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(color: AppTheme.surface, borderRadius: BorderRadius.circular(12)),
+              child: Text(incident.description, style: const TextStyle(fontSize: 13, color: AppTheme.textMid, height: 1.5)),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('Update Status')),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _detailRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: [
-          Icon(icon, size: 16, color: AppTheme.textMid),
-          const SizedBox(width: 8),
-          Text('$label: ', style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
-          Expanded(child: Text(value, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.textDark))),
-        ],
-      ),
-    );
-  }
+Widget _detailRow(IconData icon, String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Row(
+      children: [
+        Icon(icon, size: 16, color: AppTheme.textMid),
+        const SizedBox(width: 8),
+        Text('$label: ', style: const TextStyle(fontSize: 12, color: AppTheme.textMid)),
+        Expanded(child: Text(value, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.textDark))),
+      ],
+    ),
+  );
 }
