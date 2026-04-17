@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../data/dummy_data.dart';
@@ -57,51 +60,108 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
   }
 
   void _showRegisterVisitor(BuildContext context) {
+    final nameController = TextEditingController();
+    final phoneController = TextEditingController();
+    final hostController = TextEditingController(text: DummyData.currentUser.unitNumber);
+    final purposeController = TextEditingController();
+    XFile? selectedImage;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (_) => Padding(
-        padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 52),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Register Visitor', style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(height: 20),
-            const TextField(decoration: InputDecoration(labelText: 'Visitor Name')),
-            const SizedBox(height: 12),
-            const TextField(decoration: InputDecoration(labelText: 'Phone Number')),
-            const SizedBox(height: 12),
-            TextField(decoration: const InputDecoration(labelText: 'Host Unit (e.g. Z-991)'),controller: TextEditingController(text: DummyData.currentUser.unitNumber),),
-            const SizedBox(height: 12),
-            const TextField(decoration: InputDecoration(labelText: 'Purpose of Visit')),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.no_encryption_outlined),
-                    label: const Text('Gate Pass'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppTheme.secondary,
-                      side: const BorderSide(color: AppTheme.secondary),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
+      builder: (_) => StatefulBuilder(
+        builder: (context, setModalState) => Padding(
+          padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 52),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Register Visitor', style: Theme.of(context).textTheme.headlineMedium),
+              const SizedBox(height: 12),
+              const Text('Visitor Photo', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+              const SizedBox(height: 8),
+              InkWell(
+                onTap: () async {
+                  final image = await openFile(
+                    acceptedTypeGroups: [const XTypeGroup(label: 'images', extensions: ['jpg', 'jpeg', 'png'])],
+                  );
+                  if (image != null) {
+                    setModalState(() {
+                      selectedImage = image;
+                    });
+                  }
+                },
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  width: double.infinity,
+                  height: 160,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.divider.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppTheme.divider),
+                  ),
+                  child: selectedImage == null
+                      ? const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.image_outlined, size: 28, color: AppTheme.textMid),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Tap to select a visitor photo',
+                          style: TextStyle(color: AppTheme.textMid),
+                        ),
+                      ),
+                    ],
+                  )
+                      : ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      File(selectedImage!.path),
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.qr_code_rounded, size: 18),
-                    label: const Text('Generate QR'),
+              ),
+              const SizedBox(height: 20),
+              TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Visitor Name')),
+              const SizedBox(height: 12),
+              TextField(controller: phoneController, decoration: const InputDecoration(labelText: 'Phone Number')),
+              const SizedBox(height: 12),
+              TextField(controller: hostController, decoration: const InputDecoration(labelText: 'Host Unit (e.g. Z-991)')),
+              const SizedBox(height: 12),
+              TextField(controller: purposeController, decoration: const InputDecoration(labelText: 'Purpose of Visit')),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.no_encryption_outlined),
+                      label: const Text('Gate Pass'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppTheme.secondary,
+                        side: const BorderSide(color: AppTheme.secondary),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.qr_code_rounded, size: 18),
+                      label: const Text('Generate QR'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

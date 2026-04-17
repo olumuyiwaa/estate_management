@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../data/dummy_data.dart';
@@ -112,47 +115,109 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
   }
 
   void _showReportSheet(BuildContext context) {
+    XFile? selectedImage;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (_) => Padding(
-        padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 52),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Report an Issue', style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(height: 20),
-            const TextField(decoration: InputDecoration(labelText: 'Title / Summary')),
-            const SizedBox(height: 12),
-            const TextField(decoration: InputDecoration(labelText: 'Location'), ),
-            const SizedBox(height: 12),
-            const TextField(
-              decoration: InputDecoration(labelText: 'Description'),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.camera_alt_outlined, size: 18),
-                    label: const Text('Add Photo'),
-                    style: OutlinedButton.styleFrom(foregroundColor: AppTheme.secondary, side: const BorderSide(color: AppTheme.secondary), padding: const EdgeInsets.symmetric(vertical: 14)),
+      builder: (_) => StatefulBuilder(
+        builder: (context, setModalState) => Padding(
+          padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(context).viewInsets.bottom + 52),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Report an Issue', style: Theme.of(context).textTheme.headlineMedium),
+              const SizedBox(height: 12),
+              const Text('Photo', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+              const SizedBox(height: 8),
+              InkWell(
+                onTap: () async {
+                  final image = await openFile(
+                    acceptedTypeGroups: [const XTypeGroup(label: 'images', extensions: ['jpg', 'jpeg', 'png'])],
+                  );
+                  if (image != null) {
+                    setModalState(() {
+                      selectedImage = image;
+                    });
+                  }
+                },
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  width: double.infinity,
+                  height: 160,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.divider.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppTheme.divider),
+                  ),
+                  child: selectedImage == null
+                      ? const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.camera_alt_outlined, size: 28, color: AppTheme.textMid),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Tap to add a photo',
+                          style: TextStyle(color: AppTheme.textMid),
+                        ),
+                      ),
+                    ],
+                  )
+                      : ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      File(selectedImage!.path),
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Submit Report'),
+              ),
+              const SizedBox(height: 20),
+              const TextField(decoration: InputDecoration(labelText: 'Title / Summary')),
+              const SizedBox(height: 12),
+              const TextField(decoration: InputDecoration(labelText: 'Location'), ),
+              const SizedBox(height: 12),
+              const TextField(
+                decoration: InputDecoration(labelText: 'Description'),
+                maxLines: 3,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        final image = await openFile(
+                          acceptedTypeGroups: [const XTypeGroup(label: 'images', extensions: ['jpg', 'jpeg', 'png'])],
+                        );
+                        if (image != null) {
+                          setModalState(() {
+                            selectedImage = image;
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.camera_alt_outlined, size: 18),
+                      label: const Text('Add Photo'),
+                      style: OutlinedButton.styleFrom(foregroundColor: AppTheme.secondary, side: const BorderSide(color: AppTheme.secondary), padding: const EdgeInsets.symmetric(vertical: 14)),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Submit Report'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
