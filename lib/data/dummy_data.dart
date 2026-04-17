@@ -15,21 +15,25 @@ class DummyData {
 
   // ── Payments ──────────────────────────────────────────────────────────────
   static final List<PaymentRecord> payments = [
-    PaymentRecord(id: 'p1', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Service Charge Q1 2026', unitNumber: 'A-101', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 15), category: 'Service Charge'),
-    PaymentRecord(id: 'p2', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Service Charge Q1 2026', unitNumber: 'A-102', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 18), category: 'Service Charge'),
-    PaymentRecord(id: 'p3', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Service Charge Q1 2026', unitNumber: 'B-201', amount: 75000, status: PaymentStatus.pending, dueDate: DateTime(2026, 3, 31), category: 'Service Charge'),
+    PaymentRecord(id: 'p1', memberId: 'm4', memberName: 'Babatunde Lawal', description: 'Event Hall Booking Advance', unitNumber: 'B-201', amount: 300000, status: PaymentStatus.paid, dueDate: DateTime(2026, 1, 12), paidDate: DateTime(2026, 1, 5), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p2', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Security Levy Q1', unitNumber: 'C-301', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
+    PaymentRecord(id: 'p3', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Security Levy Q1', unitNumber: 'A-101', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
     PaymentRecord(id: 'p4', memberId: 'm4', memberName: 'Babatunde Lawal', description: 'Generator Levy Jan', unitNumber: 'B-202', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 31), category: 'Generator Levy'),
-    PaymentRecord(id: 'p9', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Generator Levy Jan', unitNumber: 'A-101', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 31), category: 'Generator Levy'),
-    PaymentRecord(id: 'p5', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Waste Management Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 2, 20), category: 'Waste Management'),
+    PaymentRecord(id: 'p5', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Generator Levy Jan', unitNumber: 'A-101', amount: 15000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 31), category: 'Generator Levy'),
+    PaymentRecord(id: 'p6', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Event Hall Booking Advance', unitNumber: 'B-201', amount: 300000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 12), paidDate: DateTime(2026, 2, 5), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p7', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Clubhouse Booking Fee', unitNumber: 'C-301', amount: 50000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 1, 14), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p8', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Waste Management Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 2, 20), category: 'Waste Management'),
+    PaymentRecord(id: 'p9', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Waste Management Fee', unitNumber: 'A-101', amount: 5000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 2, 20), category: 'Waste Management'),
+    PaymentRecord(id: 'p10', memberId: 'm8', memberName: 'Taiwo Adeleke', description: 'Generator Levy Feb', unitNumber: 'D-402', amount: 15000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), category: 'Generator Levy'),
+    PaymentRecord(id: 'p11', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Swimming Pool Booking Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 4, 13), category: 'Facility Booking Fee'),
     PaymentRecord(id: 'p12', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Clubhouse Booking Fee', unitNumber: 'C-301', amount: 25000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 4, 14), category: 'Facility Booking Fee'),
-    PaymentRecord(id: 'p13', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Swimming Pool Booking Fee', unitNumber: 'C-301', amount: 5000, status: PaymentStatus.paid, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 4, 13), category: 'Facility Booking Fee'),
-    PaymentRecord(id: 'p10', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Waste Management Fee', unitNumber: 'A-101', amount: 5000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), paidDate: DateTime(2026, 2, 20), category: 'Waste Management'),
-    PaymentRecord(id: 'p6', memberId: 'm6', memberName: 'Kayode Afolabi', description: 'Service Charge Q1 2026', unitNumber: 'C-302', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 5), category: 'Service Charge'),
-    PaymentRecord(id: 'p7', memberId: 'm8', memberName: 'Taiwo Adeleke', description: 'Generator Levy Feb', unitNumber: 'D-402', amount: 15000, status: PaymentStatus.pending, dueDate: DateTime(2026, 2, 28), category: 'Generator Levy'),
-    PaymentRecord(id: 'p8', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Security Levy Q1', unitNumber: 'C-301', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
-    PaymentRecord(id: 'p11', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Security Levy Q1', unitNumber: 'A-101', amount: 20000, status: PaymentStatus.overdue, dueDate: DateTime(2026, 1, 15), category: 'Security Levy'),
-    PaymentRecord(id: 'p14', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Event Hall Booking Advance', unitNumber: 'A-102', amount: 1200000, status: PaymentStatus.paid, dueDate: DateTime(2026, 4, 30), paidDate: DateTime(2026, 4, 10), category: 'Facility Booking Fee'),
-    PaymentRecord(id: 'p15', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Security Upgrade Contribution', unitNumber: 'B-201', amount: 800000, status: PaymentStatus.paid, dueDate: DateTime(2026, 5, 15), paidDate: DateTime(2026, 4, 12), category: 'Security Levy'),
+    PaymentRecord(id: 'p13', memberId: 'm5', memberName: 'Ngozi Dike', description: 'Event Hall Booking Advance', unitNumber: 'B-201', amount: 300000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 12), paidDate: DateTime(2026, 3, 5), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p14', memberId: 'm6', memberName: 'Kayode Afolabi', description: 'Service Charge Q1 2026', unitNumber: 'C-302', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 5), category: 'Service Charge'),
+    PaymentRecord(id: 'p15', memberId: 'm1', memberName: 'Adaeze Okonkwo', description: 'Service Charge Q1 2026', unitNumber: 'A-101', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 15), category: 'Service Charge'),
+    PaymentRecord(id: 'p16', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Service Charge Q1 2026', unitNumber: 'A-102', amount: 75000, status: PaymentStatus.paid, dueDate: DateTime(2026, 3, 31), paidDate: DateTime(2026, 3, 18), category: 'Service Charge'),
+    PaymentRecord(id: 'p17', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Service Charge Q1 2026', unitNumber: 'B-201', amount: 75000, status: PaymentStatus.pending, dueDate: DateTime(2026, 3, 31), category: 'Service Charge'),
+    PaymentRecord(id: 'p18', memberId: 'm2', memberName: 'Chukwuemeka Eze', description: 'Event Hall Booking Advance', unitNumber: 'A-102', amount: 300000, status: PaymentStatus.paid, dueDate: DateTime(2026, 4, 30), paidDate: DateTime(2026, 4, 10), category: 'Facility Booking Fee'),
+    PaymentRecord(id: 'p19', memberId: 'm3', memberName: 'Fatima Al-Hassan', description: 'Security Upgrade Contribution', unitNumber: 'B-201', amount: 800000, status: PaymentStatus.paid, dueDate: DateTime(2026, 5, 15), paidDate: DateTime(2026, 4, 12), category: 'Security Levy'),
   ];
 
   // ── Incidents ─────────────────────────────────────────────────────────────
@@ -94,73 +98,37 @@ class DummyData {
   static double get totalCollected => payments.where((p) => p.status == PaymentStatus.paid).fold<double>(0, (sum, payment) => sum + payment.amount);
   static double get totalExpected => payments.fold<double>(0, (sum, payment) => sum + payment.amount);
 
-  static final List<Map<String, dynamic>> monthlyIncome = [
-    {'month': 'Oct', 'amount': 420000.0},
-    {'month': 'Nov', 'amount': 390000.0},
-    {'month': 'Dec', 'amount': 510000.0},
-    {'month': 'Jan', 'amount': 445000.0},
-    {'month': 'Feb', 'amount': 480000.0},
-    {'month': 'Mar', 'amount': 605000.0},
-  ];
+  static const List<String> _monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  static final Map<int, List<Map<String, dynamic>>> yearlyIncome = {
-    2026: [
-      {'month': 'Jan', 'amount': 420000.0},
-      {'month': 'Feb', 'amount': 395000.0},
-      {'month': 'Mar', 'amount': 510000.0},
-      {'month': 'Apr', 'amount': 470000.0},
-      {'month': 'May', 'amount': 0.0},
-      {'month': 'Jun', 'amount': 0.0},
-      {'month': 'Jul', 'amount': 0.0},
-      {'month': 'Aug', 'amount': 0.0},
-      {'month': 'Sep', 'amount': 0.0},
-      {'month': 'Oct', 'amount': 0.0},
-      {'month': 'Nov', 'amount': 0.0},
-      {'month': 'Dec', 'amount': 0.0},
-    ],
-    2025: [
-      {'month': 'Jan', 'amount': 220000.0},
-      {'month': 'Feb', 'amount': 495000.0},
-      {'month': 'Mar', 'amount': 580000.0},
-      {'month': 'Apr', 'amount': 420000.0},
-      {'month': 'May', 'amount': 445000.0},
-      {'month': 'Jun', 'amount': 500000.0},
-      {'month': 'Jul', 'amount': 525000.0},
-      {'month': 'Aug', 'amount': 515000.0},
-      {'month': 'Sep', 'amount': 485000.0},
-      {'month': 'Oct', 'amount': 450000.0},
-      {'month': 'Nov', 'amount': 395000.0},
-      {'month': 'Dec', 'amount': 530000.0},
-    ],
-    2024: [
-      {'month': 'Jan', 'amount': 385000.0},
-      {'month': 'Feb', 'amount': 410000.0},
-      {'month': 'Mar', 'amount': 460000.0},
-      {'month': 'Apr', 'amount': 430000.0},
-      {'month': 'May', 'amount': 415000.0},
-      {'month': 'Jun', 'amount': 470000.0},
-      {'month': 'Jul', 'amount': 490000.0},
-      {'month': 'Aug', 'amount': 505000.0},
-      {'month': 'Sep', 'amount': 465000.0},
-      {'month': 'Oct', 'amount': 440000.0},
-      {'month': 'Nov', 'amount': 405000.0},
-      {'month': 'Dec', 'amount': 520000.0},
-    ],
-    2023: [
-      {'month': 'Jan', 'amount': 360000.0},
-      {'month': 'Feb', 'amount': 375000.0},
-      {'month': 'Mar', 'amount': 420000.0},
-      {'month': 'Apr', 'amount': 400000.0},
-      {'month': 'May', 'amount': 390000.0},
-      {'month': 'Jun', 'amount': 450000.0},
-      {'month': 'Jul', 'amount': 470000.0},
-      {'month': 'Aug', 'amount': 480000.0},
-      {'month': 'Sep', 'amount': 455000.0},
-      {'month': 'Oct', 'amount': 430000.0},
-      {'month': 'Nov', 'amount': 395000.0},
-      {'month': 'Dec', 'amount': 500000.0},
-    ],
-  };
+  static List<Map<String, dynamic>> get monthlyIncome {
+    final year = DateTime.now().year;
+    return yearlyIncome[year] ?? _emptyMonthlyIncome();
+  }
+
+  static Map<int, List<Map<String, dynamic>>> get yearlyIncome {
+    final grouped = <int, Map<int, double>>{};
+
+    for (final payment in payments.where((p) => p.paidDate != null)) {
+      final paidDate = payment.paidDate!;
+      grouped.putIfAbsent(paidDate.year, () => <int, double>{});
+      grouped[paidDate.year]![paidDate.month] = (grouped[paidDate.year]![paidDate.month] ?? 0) + payment.amount;
+    }
+
+    return grouped.map((year, monthMap) {
+      final monthValues = List.generate(12, (index) => {
+        'month': _monthNames[index],
+        'amount': monthMap[index + 1] ?? 0.0,
+      });
+      return MapEntry(year, monthValues);
+    });
+  }
+
+  static List<Map<String, dynamic>> _emptyMonthlyIncome() {
+    return List.generate(12, (index) => {
+      'month': _monthNames[index],
+      'amount': 0.0,
+    });
+  }
 
   static final List<Map<String, dynamic>> expenseCategories = [
     {'name': 'Security', 'amount': 250000.0, 'color': 0xFF0D1B2A},

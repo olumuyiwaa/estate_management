@@ -169,7 +169,7 @@ class FacilitiesScreen extends StatelessWidget {
     {'name': 'Swimming Pool', 'icon': Icons.pool_rounded, 'color': 0xFF2980B9, 'slots': '10', 'fee': '₦5,000/hr'},
     {'name': 'Clubhouse', 'icon': Icons.meeting_room_rounded, 'color': 0xFF8E44AD, 'slots': '6', 'fee': '₦25,000/session'},
     {'name': 'Tennis Court', 'icon': Icons.sports_tennis_rounded, 'color': 0xFF27AE60, 'slots': '8', 'fee': '₦3,000/hr'},
-    {'name': 'Event Hall', 'icon': Icons.event_rounded, 'color': 0xFFC9973A, 'slots': '4', 'fee': '₦80,000/day'},
+    {'name': 'Event Hall', 'icon': Icons.event_rounded, 'color': 0xFFC9973A, 'slots': '4', 'fee': '₦300,000/day'},
     {'name': 'Gym', 'icon': Icons.fitness_center_rounded, 'color': 0xFFE74C3C, 'slots': '12', 'fee': '₦2,000/session'},
     {'name': 'Kids Playground', 'icon': Icons.child_care_rounded, 'color': 0xFF16A085, 'slots': '∞', 'fee': 'Free'},
   ];
