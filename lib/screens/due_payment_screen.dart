@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../data/dummy_data.dart';
 import '../models/models.dart';
@@ -361,6 +362,31 @@ class PaymentReceiptScreen extends StatelessWidget {
                   if (payment.paidDate != null) _buildReceiptItem('Paid On', _formatDate(payment.paidDate!)),
                   _buildReceiptItem('Due Date', _formatDate(payment.dueDate)),
                 ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            // QR Code for Payment Confirmation
+            const Text(
+              'Payment Confirmation QR Code',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.textDark,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Center(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.divider),
+                ),
+                child: QrImageView(
+                  data: 'https://citiview.netlify.app/payment-confirm?id=${payment.id}',
+                  size: 150,
+                ),
               ),
             ),
             const SizedBox(height: 24),

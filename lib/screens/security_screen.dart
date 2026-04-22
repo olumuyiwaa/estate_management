@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../data/dummy_data.dart';
 import '../models/models.dart';
 import '../theme/app_theme.dart';
 import '../widgets/widgets.dart';
+import 'visitor_details_screen.dart';
 
 class SecurityScreen extends StatefulWidget {
   const SecurityScreen({super.key});
@@ -40,10 +43,11 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
           indicatorColor: AppTheme.accent,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white60,
-          tabs: const [Tab(text: 'Visitors'), Tab(text: 'Access Log')],
+          tabs: const [Tab(text: 'My Visitors'), Tab(text: 'Access Log')],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'register_visitor_fab',
         onPressed: () => _showRegisterVisitor(context),
         backgroundColor: AppTheme.accent,
         icon: const Icon(Icons.person_add_rounded, color: Colors.white),
@@ -60,6 +64,7 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
   }
 
   void _showRegisterVisitor(BuildContext context) {
+    final outerContext = context;
     final nameController = TextEditingController();
     final phoneController = TextEditingController();
     final hostController = TextEditingController(text: DummyData.currentUser.unitNumber);
@@ -153,7 +158,33 @@ class _SecurityScreenState extends State<SecurityScreen> with SingleTickerProvid
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        if (nameController.text.isEmpty || phoneController.text.isEmpty || hostController.text.isEmpty || purposeController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please fill all fields')),
+                          );
+                          return;
+                        }
+                        final url = 'https://citiview.netlify.app/qrpage?name=${Uri.encodeComponent(nameController.text)}&phone=${Uri.encodeComponent(phoneController.text)}&host=${Uri.encodeComponent(hostController.text)}&purpose=${Uri.encodeComponent(purposeController.text)}';
+                        Navigator.pop(context);
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          showDialog(
+                            context: outerContext,
+                            builder: (_) => AlertDialog(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8)),
+                              title: const Text('Visitor QR Code'),
+                              content: SizedBox(
+                                width: 240,
+                                height: 240,
+                                child: QrImageView(
+                                  data: url,
+                                  size: 200,
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                      },
                       icon: const Icon(Icons.qr_code_rounded, size: 18),
                       label: const Text('Generate QR'),
                     ),
@@ -177,7 +208,7 @@ class _VisitorsTab extends StatelessWidget {
     }).toList();
 
     if (userVisitors.isEmpty) {
-      return const EmptyState(icon: Icons.person_search_outlined, message: 'No visitors found for your unit');
+      return EmptyState(icon: Icons.person_search_outlined, message: 'No visitors found for your unit');
     }
 
     return ListView.builder(
@@ -198,49 +229,60 @@ class _VisitorCard extends StatelessWidget {
     final color = isIn ? AppTheme.success : AppTheme.error;
     final timeFmt = DateFormat('h:mm a').format(visitor.timestamp);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppTheme.divider),
-      ),
-      child: Row(
-        children: [
-          MemberAvatar(initials: visitor.name.substring(0, 2).toUpperCase(), size: 46, color: color),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(child: Text(visitor.name, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600))),
-                    if (visitor.hasQrPass)
-                      const Icon(Icons.qr_code_rounded, size: 16, color: AppTheme.info),
-                  ],
-                ),
-                Text('Host: ${visitor.hostName} · ${visitor.hostUnit}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
-                Text('${visitor.purpose} · $timeFmt', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
-              ],
-            ),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => VisitorDetailsScreen(visitor: visitor),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
+        );
+      },
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppTheme.divider),
+        ),
+        child: Row(
+          children: [
+            MemberAvatar(initials: visitor.name.substring(0, 2).toUpperCase(), size: 46, color: color),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: Text(visitor.name, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600))),
+                      if (visitor.hasQrPass)
+                        const Icon(Icons.qr_code_rounded, size: 16, color: AppTheme.info),
+                    ],
+                  ),
+                  Text('Host: ${visitor.hostName} · ${visitor.hostUnit}', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                  Text('${visitor.purpose} · $timeFmt', style: const TextStyle(fontSize: 11, color: AppTheme.textMid)),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Icon(isIn ? Icons.login_rounded : Icons.logout_rounded, color: color, size: 14),
-                const SizedBox(width: 4),
-                Text(isIn ? 'IN' : 'OUT', style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w700)),
-              ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Icon(isIn ? Icons.login_rounded : Icons.logout_rounded, color: color, size: 14),
+                  const SizedBox(width: 4),
+                  Text(isIn ? 'IN' : 'OUT', style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.w700)),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -266,7 +308,7 @@ class _AccessLogTab extends StatelessWidget {
     final userLog = _log.where((entry) => entry['unit'] == user.unitNumber).toList();
 
     if (userLog.isEmpty) {
-      return const EmptyState(icon: Icons.lock_outline, message: 'No access log entries found for your unit');
+      return EmptyState(icon: Icons.lock_outline, message: 'No access log entries found for your unit');
     }
 
     return ListView.builder(

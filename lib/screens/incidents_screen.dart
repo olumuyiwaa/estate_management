@@ -17,7 +17,7 @@ class IncidentsScreen extends StatefulWidget {
 class _IncidentsScreenState extends State<IncidentsScreen> {
   IncidentStatus? _filter;
 
-  List<Incident> get _filtered => DummyData.incidents.where((i) => _filter == null || i.status == _filter).toList();
+  List<Incident> get _filtered => DummyData.incidents.where((i) => (_filter == null || i.status == _filter) && i.reportedBy.toLowerCase() == DummyData.currentUser.name.toLowerCase()).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +48,9 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
   }
 
   Widget _buildSummaryRow() {
-    final open = DummyData.incidents.where((i) => i.status == IncidentStatus.open).length;
-    final prog = DummyData.incidents.where((i) => i.status == IncidentStatus.inProgress).length;
-    final done = DummyData.incidents.where((i) => i.status == IncidentStatus.resolved).length;
+    final open = DummyData.incidents.where((i) => (i.status == IncidentStatus.open)&& i.reportedBy.toLowerCase() == DummyData.currentUser.name.toLowerCase()).length;
+    final prog = DummyData.incidents.where((i) => (i.status == IncidentStatus.inProgress)&& i.reportedBy.toLowerCase() == DummyData.currentUser.name.toLowerCase()).length;
+    final done = DummyData.incidents.where((i) => (i.status == IncidentStatus.resolved)&& i.reportedBy.toLowerCase() == DummyData.currentUser.name.toLowerCase()).length;
 
     return Container(
       color: Colors.white,
